@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
+import ScrollRigRoot from "./components/scroll-rig/ScrollRigRoot";
 import "./globals.css";
+
+const bricolageGrotesque = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: "variable",
+  axes: ["wdth", "opsz"],
+  variable: "--font-bricolage",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,8 +33,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${bricolageGrotesque.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ScrollRigRoot />
         {children}
       </body>
     </html>
