@@ -2,14 +2,15 @@ import Header from "../components/Header";
 import { getStoryblokApi } from "../storyblok";
 
 function resolveHeaderBlok(content: {
-  component: string;
-  body?: { component: string }[];
+  component?: string;
+  body?: Array<{ component?: string }>;
+  [key: string]: any;
 }) {
   if (content.component === "header") {
     return content;
   }
 
-  const headerBlok = content.body?.find((blok) => blok.component === "header");
+  const headerBlok = content.body?.find((blok) => blok?.component === "header");
   return headerBlok ?? content;
 }
 
