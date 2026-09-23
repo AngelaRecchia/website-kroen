@@ -257,7 +257,7 @@ export default function KroenField() {
       const animated = isAnimated(p);
 
       simTime += dt * p.speed;
-      hue = (hue + dt * p.hueSpeed * Math.PI * 2) % (Math.PI * 2);
+      hue = p.hueSpeed > 0 ? (hue + dt * p.hueSpeed * Math.PI * 2) % (Math.PI * 2) : 0;
 
       if (animated) {
         const idle = performance.now() - lastMove > 3500;
