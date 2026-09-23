@@ -1,0 +1,41 @@
+/* Mixin titoli: .t-h1 (hero) … .t-h4 (+ .display legacy) */
+
+:where(.t-h1, .t-h2, .t-h3, .t-h4, .display, .hero__title, .event__title) {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-synthesis: none;
+  text-transform: uppercase;
+  line-height: var(--type-title-line-height);
+  letter-spacing: var(--type-title-letter-spacing);
+}
+
+.t-h1 {
+  font-size: var(--fs-t-h1);
+  line-height: var(--type-title-line-height-h1);
+}
+
+.t-h2 {
+  font-size: var(--fs-t-h2);
+}
+
+.t-h3 {
+  font-size: var(--fs-t-h3);
+}
+
+.t-h4 {
+  font-size: var(--fs-t-h4);
+}
+
+.hero__title,
+.hero__title-line {
+  line-height: var(--type-title-line-height-h1);
+}
+
+.hero__title {
+  font-size: var(--fs-t-h1);
+  letter-spacing: var(--type-title-letter-spacing);
+}
+
+.event__title {
+  font-size: var(--fs-t-h3);
+}

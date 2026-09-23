@@ -1,0 +1,19 @@
+/* Fallback @font-face se next/font non applica le CSS variables */
+
+@font-face {
+  font-family: "MOON GET!";
+  src:
+    url("/fonts/moon-get/MoonGet-Heavy.otf") format("opentype"),
+    url("/fonts/moon-get/MoonGet-Heavy.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arhaic Romanesc";
+  src: url("/fonts/arhaic-romanesc/ArhaicRomanesc.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}

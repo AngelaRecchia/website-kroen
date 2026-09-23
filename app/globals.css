@@ -1,69 +1,48 @@
 @import "tailwindcss";
+@import "./styles/index.css";
 
 :root {
-  --kroen-red: #ec2021;
-  --background: var(--kroen-red);
-  --foreground: #ffffff;
+  --background: var(--color-red);
+  --foreground: var(--color-paper);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-kroen-red: var(--kroen-red);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-bricolage);
-}
-
-.heading-text,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-bricolage), ui-sans-serif, sans-serif;
-  font-weight: 800;
-  font-stretch: 100%;
-  font-variation-settings: "wdth" 100, "wght" 800;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  letter-spacing: -0.03em;
+  --color-kroen-red: var(--color-red);
+  --font-sans: var(--font-archivo);
+  --font-heading: var(--font-display);
+  --text-t-h1: var(--fs-t-h1);
+  --text-t-h2: var(--fs-t-h2);
+  --text-t-h3: var(--fs-t-h3);
+  --text-t-h4: var(--fs-t-h4);
+  --text-body: var(--font-size-body);
+  --text-nav: var(--font-size-nav);
+  --text-date: var(--font-size-date);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Times New Roman, Times, serif;
-  letter-spacing: -0.1em;
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
   margin: 0;
+  overflow-x: hidden;
 }
 
-.wave-item {
-  will-change: transform;
-  opacity: 0.45;
-  transition:
-    opacity 300ms ease-out,
-    filter 300ms ease-out,
-    color 300ms ease-out;
+a {
+  color: inherit;
 }
 
-.wave-item.wave-focused {
-  opacity: 1;
-  z-index: 2;
+:focus-visible {
+  outline: 3px solid var(--color-paper);
+  outline-offset: 4px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .wave-item {
-    opacity: 1 !important;
-    transform: none !important;
-  }
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
 }
 
 .event-banner-slot {

@@ -4,6 +4,9 @@ import { ScrollScene, UseCanvas, useScrollRig } from "@14islands/r3f-scroll-rig"
 import { Suspense, useEffect, useRef, useState } from "react";
 import BannerPlane from "./BannerPlane";
 
+/** Effetto WebGL in pausa: `false` per riattivarlo. */
+const WEBGL_PAUSED = true;
+
 export default function EventBannerSlot({
   src,
   alt = "",
@@ -40,9 +43,9 @@ export default function EventBannerSlot({
   if (!src) {
     return (
       <div
-        className={`relative flex aspect-video w-full items-center justify-center overflow-hidden bg-black/25 ${className}`.trim()}
+        className={`photo flex w-full items-center justify-center ${className}`.trim()}
       >
-        <span className="heading-text px-4 text-center text-2xl uppercase leading-tight">
+        <span className="display t-h4 px-2 sm:px-4 text-center">
           {title || "Evento"}
         </span>
       </div>
@@ -50,14 +53,15 @@ export default function EventBannerSlot({
   }
 
   const showWebgl =
-    webglEnabledProp === true ||
-    (webglEnabledProp === undefined && localWebgl);
+    !WEBGL_PAUSED &&
+    (webglEnabledProp === true ||
+      (webglEnabledProp === undefined && localWebgl));
 
   return (
     <div
       ref={trackRef}
       data-event-banner
-      className={`event-banner-slot relative aspect-video w-full overflow-hidden ${className}`.trim()}
+      className={`event-banner-slot photo w-full ${className}`.trim()}
     >
       <img
         ref={imageRef}

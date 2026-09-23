@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --experimental-https",
+    "dev": "next dev --experimental-https -p 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "storyblok:components": "node scripts/create-storyblok-components.mjs",
+    "storyblok:pages": "node scripts/seed-kroen-pages.mjs",
+    "storyblok:layout": "node scripts/seed-layout-components.mjs",
+    "storyblok:events": "node scripts/seed-dummy-events.mjs"
   },
   "dependencies": {
     "@14islands/r3f-scroll-rig": "^8.15.0",

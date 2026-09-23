@@ -1,18 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import EventAccordionItem from "./EventAccordionItem";
 import EventBanner from "./EventBanner";
-import ScrollWaveGroup from "./ScrollWaveGroup";
+import { useEffect, useState } from "react";
 
-function EventsSectionTitle({ children }) {
-  return (
-    <h2 className="wave-item heading-text mb-6 w-max text-left text-[32px] uppercase leading-none">
-      {children}
-    </h2>
-  );
-}
-
-export default function EventsClient({ upcoming, past }) {
+export default function EventsClient({
+  upcoming,
+  past,
+  showUpcoming = true,
+  pastDisplay = "link",
+  pastLinkHref = "/eventi-passati",
+  pastLinkLabel = "Eventi passati",
+}) {
   const [webglEnabled, setWebglEnabled] = useState(false);
 
   useEffect(() => {
@@ -22,45 +21,57 @@ export default function EventsClient({ upcoming, past }) {
     setWebglEnabled(!reducedMotion);
   }, []);
 
-  if (upcoming.length === 0 && past.length === 0) {
+  const showPastGrid = pastDisplay === "grid" && past.length > 0;
+  const showPastLink = pastDisplay === "link";
+  const hasUpcomingList = showUpcoming && upcoming.length > 0;
+
+  if (!hasUpcomingList && !showPastGrid && !showPastLink) {
     return null;
   }
 
   return (
-    <section className="relative mx-auto w-full max-w-[900px] px-4 pt-2 pb-8">
-      {upcoming.length > 0 && (
-        <div className="flex flex-col gap-6">
-          {upcoming.map((story, index) => (
-            <EventBanner
-              key={story.uuid}
-              image={story.content?.image}
-              title={story.content?.title || ""}
-              priority={index === 0}
-              webglEnabled={webglEnabled}
-            />
-          ))}
+    <section className="block">
+      {hasUpcomingList && (
+        <>
+          <h2 className="sr-only">Prossimi eventi</h2>
+          <ul className="events">
+            {upcoming.map((story) => (
+              <EventAccordionItem
+                key={story.uuid}
+                title={story.content?.title || ""}
+                date={story.content?.date}
+                description={story.content?.description}
+                eventDescription={story.content?.event_description}
+                startTime={story.content?.start_time}
+                endTime={story.content?.end_time}
+                contributo={story.content?.contributo}
+                image={story.content?.image}
+                slug={story.full_slug}
+                soldOut={Boolean(story.content?.sold_out)}
+              />
+            ))}
+          </ul>
+        </>
+      )}
+
+      {showPastLink && (
+        <div className={hasUpcomingList ? "mt-12" : undefined}>
+          <a href={pastLinkHref} className="btn btn--line">
+            {pastLinkLabel}
+          </a>
         </div>
       )}
 
-      {past.length > 0 && (
-        <div className={upcoming.length > 0 ? "mt-12" : undefined}>
-          <ScrollWaveGroup
-            waveNumber={10}
-            waveSpeed={1}
-            direction={-1}
-            rangeMode="align-start"
-            maxShift={40}
-          >
-            <EventsSectionTitle>Eventi passati</EventsSectionTitle>
-          </ScrollWaveGroup>
-
-          <div className="mt-6 grid grid-cols-3 gap-3">
+      {showPastGrid && (
+        <div className={hasUpcomingList ? "mt-12" : undefined}>
+          <h2 className="display t-h2">Eventi passati</h2>
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
             {past.map((story) => (
               <EventBanner
                 key={story.uuid}
                 image={story.content?.image}
                 title={story.content?.title || ""}
-                className="opacity-90"
+                className="m-0 opacity-90"
                 webglEnabled={webglEnabled}
               />
             ))}

@@ -1,39 +1,20 @@
+import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { getStoryblokApi } from "../storyblok";
-
-function resolveHeaderBlok(content: {
-  component?: string;
-  body?: Array<{ component?: string }>;
-  [key: string]: any;
-}) {
-  if (content.component === "header") {
-    return content;
-  }
-
-  const headerBlok = content.body?.find((blok) => blok?.component === "header");
-  return headerBlok ?? content;
-}
-
-async function fetchHeaderBlok() {
-  const storyblokApi = getStoryblokApi();
-  const { data } = await storyblokApi.getStory("header", {
-    version: "draft",
-  });
-
-  return resolveHeaderBlok(data.story.content);
-}
+import KroenShell from "../components/kroen/KroenShell";
+import { getGlobalLayout } from "../lib/storyblok-layout";
 
 export default async function WithLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headerBlok = await fetchHeaderBlok();
+  const { header: headerBlok, footer: footerBlok } = await getGlobalLayout();
 
   return (
-    <>
-      <Header blok={headerBlok} />
+    <KroenShell>
+      {headerBlok && <Header blok={headerBlok} />}
       {children}
-    </>
+      {footerBlok && <Footer blok={footerBlok} />}
+    </KroenShell>
   );
 }

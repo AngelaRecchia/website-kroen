@@ -1,14 +1,20 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-function loadEnv() {
-  const content = readFileSync(resolve(process.cwd(), ".env.local"), "utf8");
-  for (const line of content.split("\n")) {
+function loadEnvFile(filename) {
+  const envPath = resolve(process.cwd(), filename);
+  if (!existsSync(envPath)) return false;
+  for (const line of readFileSync(envPath, "utf8").split("\n")) {
     const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith("#")) continue;
     const [key, ...rest] = trimmed.split("=");
     process.env[key] = rest.join("=");
   }
+  return true;
+}
+
+function loadEnv() {
+  if (!loadEnvFile(".env.local")) loadEnvFile(".env");
 }
 
 loadEnv();
@@ -49,6 +55,10 @@ async function createEvent([slug, name, date, description]) {
           title: name,
           date,
           description,
+          start_time: "21:00",
+          end_time: "01:00",
+          event_description: description,
+          contributo: "5 €",
         },
       },
     }),

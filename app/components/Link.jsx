@@ -1,22 +1,26 @@
 import { storyblokLinkUrl } from "../lib/storyblok-utils";
 
 const variantStyles = {
-  nav: "heading-text block uppercase text-[32px] leading-none transition-opacity hover:opacity-80",
-  title: "heading-text block w-full uppercase text-[7.75rem] leading-[0.7] text-left",
+  nav: "t-h4 kroen-nav__link kroen-reveal text-white transition-opacity hover:opacity-90",
+  title: "hero__title t-h1",
 };
 
+/** Sempre due righe: prima parola / resto (NBSP, niente break dentro le parole). */
 function TitleLines({ title }) {
-  const words = String(title).trim().split(/\s+/);
+  const words = String(title).trim().split(/\s+/).filter(Boolean);
 
   if (words.length < 2) {
-    return title;
+    return (
+      <span className="hero__title-line">{words[0] ?? title}</span>
+    );
   }
+
+  const line2 = words.slice(1).join("\u00A0");
 
   return (
     <>
-      {words[0]}
-      <br />
-      {words.slice(1).join(" ")}
+      <span className="hero__title-line">{words[0]}</span>
+      <span className="hero__title-line">{line2}</span>
     </>
   );
 }
@@ -35,7 +39,10 @@ export default function Link({
 
   if (!title) return null;
 
-  const className = `wave-item w-max max-w-full text-white ${variantStyles[variant] ?? variantStyles.nav}`;
+  const className =
+    variant === "title"
+      ? variantStyles.title
+      : `w-max max-w-full ${variantStyles[variant] ?? variantStyles.nav}`;
   const href = storyblokLinkUrl(link);
   const hasLink = href && href !== "#";
   const content =
@@ -43,6 +50,14 @@ export default function Link({
 
   if (variant === "title" && !hasLink) {
     return <h1 className={className}>{content}</h1>;
+  }
+
+  if (variant === "nav") {
+    return (
+      <h4 className={className}>
+        <a href={href}>{content}</a>
+      </h4>
+    );
   }
 
   return (
