@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import ScrollRigRoot from "./components/scroll-rig/ScrollRigRoot";
+import KroenShell from "./components/kroen/KroenShell";
 import "./globals.css";
+import "./styles/kroen-experience.css";
 
 const bricolageGrotesque = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -36,7 +38,7 @@ export default function RootLayout({
         className={`${bricolageGrotesque.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ScrollRigRoot />
-        {children}
+        <KroenShell>{children}</KroenShell>
       </body>
     </html>
   );

@@ -1,0 +1,467 @@
+/* Campo WebGL, cursor ring, dock FAB e pannello "Esperienza" */
+
+:root {
+  --color-red: #c91515;
+  --color-red-deep: #8f0c0c;
+  --color-paper: #ffffff;
+  --color-ink: #000000;
+  --ease-default: cubic-bezier(0.22, 1, 0.36, 1);
+  --space-gutter: clamp(16px, 4vw, 32px);
+  --font-ui: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.kroen-shell {
+  position: relative;
+  z-index: 1;
+}
+
+#kroen-field {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+}
+
+.kroen-ring {
+  --ring-size: calc(44px * var(--ring-scale, 1));
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--ring-size);
+  height: var(--ring-size);
+  margin: calc(var(--ring-size) / -2) 0 0 calc(var(--ring-size) / -2);
+  border: 2px solid var(--color-paper);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 70;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition:
+    width 0.25s var(--ease-default),
+    height 0.25s var(--ease-default),
+    margin 0.25s var(--ease-default),
+    background 0.25s,
+    opacity 0.3s;
+}
+
+.kroen-ring.is-on {
+  opacity: 1;
+}
+
+.kroen-ring.is-hot {
+  --ring-size: calc(84px * var(--ring-scale, 1));
+  background: var(--color-paper);
+}
+
+@media (pointer: coarse) {
+  .kroen-ring {
+    display: none;
+  }
+}
+
+/* Dock FAB */
+
+.kroen-fab-dock {
+  position: fixed;
+  right: max(var(--space-gutter), env(safe-area-inset-right, 0px));
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  z-index: 66;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+html.is-splash .kroen-fab-dock {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.kroen-exp-fab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 1.1rem 0.6rem 0.7rem;
+  border: 2px solid var(--color-paper);
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--color-ink) 35%, transparent);
+  transition:
+    background 0.2s var(--ease-default),
+    color 0.2s var(--ease-default),
+    transform 0.2s var(--ease-default);
+}
+
+.kroen-exp-fab:hover,
+.kroen-exp-fab:focus-visible,
+.kroen-exp-fab.is-open {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  outline: none;
+}
+
+.kroen-exp-fab:active {
+  transform: scale(0.96);
+}
+
+.kroen-exp-fab__icon {
+  display: grid;
+  grid-template-columns: repeat(2, 8px);
+  gap: 3px;
+  padding: 3px;
+}
+
+.kroen-exp-fab__icon span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--exp-dot);
+  box-shadow: 0 0 0 1px currentColor;
+  transition: border-radius 0.3s var(--ease-default), transform 0.3s var(--ease-default);
+}
+
+.kroen-exp-fab:hover .kroen-exp-fab__icon span:nth-child(odd),
+.kroen-exp-fab.is-open .kroen-exp-fab__icon span:nth-child(odd) {
+  border-radius: 1px;
+  transform: rotate(45deg) scale(0.85);
+}
+
+.kroen-exp-fab__text {
+  display: grid;
+  gap: 3px;
+  text-align: left;
+}
+
+.kroen-exp-fab__preset {
+  font-size: 0.62rem;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+/* Pannello */
+
+.kroen-exp-panel {
+  position: fixed;
+  right: max(var(--space-gutter), env(safe-area-inset-right, 0px));
+  bottom: calc(max(1.25rem, env(safe-area-inset-bottom, 0px)) + 4.25rem);
+  z-index: 65;
+  width: min(380px, calc(100vw - 2 * var(--space-gutter)));
+  max-height: min(75vh, 640px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 1rem 1.1rem 1.1rem;
+  border: 2px solid var(--color-paper);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--color-ink) 90%, transparent);
+  backdrop-filter: blur(12px);
+  color: var(--color-paper);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  letter-spacing: normal;
+  line-height: 1.35;
+  box-shadow: 0 18px 60px color-mix(in srgb, var(--color-ink) 45%, transparent);
+  animation: kroen-exp-in 0.28s var(--ease-default);
+}
+
+@keyframes kroen-exp-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+.kroen-exp-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.kroen-exp-panel__head strong {
+  font-family: var(--font-bricolage), var(--font-ui);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.kroen-exp-panel__close {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--color-paper);
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.kroen-exp-panel__close:hover,
+.kroen-exp-panel__close:focus-visible {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  outline: none;
+}
+
+.kroen-exp-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.kroen-exp-chip {
+  padding: 0.55rem 0.8rem;
+  border: 2px solid var(--color-paper);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s var(--ease-default),
+    color 0.2s var(--ease-default),
+    transform 0.2s var(--ease-default);
+}
+
+.kroen-exp-chip:hover {
+  transform: translateY(-1px);
+}
+
+.kroen-exp-chip:focus-visible {
+  outline: 2px solid var(--color-paper);
+  outline-offset: 2px;
+}
+
+.kroen-exp-chip.is-active {
+  border-color: var(--color-red);
+  background: var(--color-red);
+  color: var(--color-paper);
+}
+
+.kroen-exp-groups {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.kroen-exp-group {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0.8rem 0 0;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-paper) 25%, transparent);
+}
+
+.kroen-exp-group legend {
+  float: left;
+  width: 100%;
+  margin-bottom: 0.1rem;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.kroen-exp-group--advanced legend::after {
+  content: " · dev";
+}
+
+.kroen-exp-row {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.kroen-exp-row__label {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.kroen-exp-row output {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.65;
+}
+
+.kroen-exp-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--color-red);
+  cursor: pointer;
+}
+
+.kroen-exp-row--toggle {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  cursor: pointer;
+}
+
+.kroen-exp-switch {
+  appearance: none;
+  position: relative;
+  width: 2.4rem;
+  height: 1.35rem;
+  margin: 0;
+  border: 2px solid var(--color-paper);
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s var(--ease-default);
+}
+
+.kroen-exp-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(1.35rem - 8px);
+  height: calc(1.35rem - 8px);
+  border-radius: 50%;
+  background: var(--color-paper);
+  transition: transform 0.2s var(--ease-default);
+}
+
+.kroen-exp-switch:checked {
+  border-color: var(--color-red);
+  background: var(--color-red);
+}
+
+.kroen-exp-switch:checked::after {
+  transform: translateX(1.05rem);
+}
+
+.kroen-exp-switch:focus-visible {
+  outline: 2px solid var(--color-paper);
+  outline-offset: 2px;
+}
+
+.kroen-exp-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.kroen-exp-swatch {
+  position: relative;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 2px solid color-mix(in srgb, var(--color-paper) 50%, transparent);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-default);
+}
+
+.kroen-exp-swatch:hover {
+  transform: scale(1.12);
+}
+
+.kroen-exp-swatch.is-active {
+  border-color: var(--color-paper);
+  box-shadow: 0 0 0 2px var(--color-ink), 0 0 0 4px var(--color-paper);
+}
+
+.kroen-exp-swatch--picker {
+  overflow: hidden;
+  background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+}
+
+.kroen-exp-swatch--picker input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.kroen-exp-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+}
+
+.kroen-exp-action {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-paper);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s var(--ease-default),
+    color 0.2s var(--ease-default);
+}
+
+.kroen-exp-action:hover,
+.kroen-exp-action:focus-visible {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  outline: none;
+}
+
+.kroen-exp-action--primary {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.kroen-exp-action--primary:hover,
+.kroen-exp-action--primary:focus-visible {
+  background: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-paper);
+}
+
+@media (max-width: 767px) {
+  .kroen-exp-panel {
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 78vh;
+    padding-bottom: calc(1.1rem + 4.5rem + env(safe-area-inset-bottom, 0px));
+    border-width: 2px 0 0;
+    border-radius: 22px 22px 0 0;
+    animation-name: kroen-exp-sheet;
+  }
+
+  @keyframes kroen-exp-sheet {
+    from {
+      transform: translateY(100%);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kroen-ring,
+  .kroen-exp-fab,
+  .kroen-exp-chip,
+  .kroen-exp-switch,
+  .kroen-exp-switch::after {
+    transition: none !important;
+  }
+
+  .kroen-exp-panel {
+    animation: none;
+  }
+}
