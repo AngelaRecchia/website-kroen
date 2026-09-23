@@ -2,13 +2,17 @@
 
 import { useEffect, useRef } from "react";
 
+import { useKroenFieldParams } from "./KroenFieldContext";
+
 export default function KroenCursorRing() {
   const ringRef = useRef(null);
+  const { params, ready } = useKroenFieldParams();
+  const enabled = ready && params.ringEnabled;
 
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!enabled) return;
     const coarse = window.matchMedia("(pointer: coarse)").matches;
-    if (reduce || coarse) return;
+    if (coarse) return;
 
     const ring = ringRef.current;
     if (!ring) return;
@@ -22,7 +26,7 @@ export default function KroenCursorRing() {
       const t = e.target;
       if (
         t instanceof Element &&
-        t.closest("a, button, .event__head, .btn, .tab, input, select, textarea")
+        t.closest("a, button, .event__head, .btn, .tab, input, select, textarea, label")
       ) {
         ring.classList.add("is-hot");
       } else {
@@ -45,7 +49,16 @@ export default function KroenCursorRing() {
       document.removeEventListener("mouseover", onOver);
       window.removeEventListener("kroen-pointer", onPointer);
     };
-  }, []);
+  }, [enabled]);
 
-  return <div className="kroen-ring" ref={ringRef} aria-hidden="true" />;
+  if (!enabled) return null;
+
+  return (
+    <div
+      className="kroen-ring"
+      ref={ringRef}
+      aria-hidden="true"
+      style={{ "--ring-scale": params.ringScale }}
+    />
+  );
 }

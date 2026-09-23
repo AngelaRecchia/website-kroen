@@ -10,41 +10,112 @@ import {
 } from "react";
 
 import {
-  KROEN_FIELD_DEFAULTS,
+  EXPERIENCE_PRESETS,
+  EXPERIENCE_PRESET_IDS,
   mergeKroenFieldParams,
+  randomExperienceParams,
 } from "../../lib/kroen-field-config";
+
+const STORAGE_KEY = "kroen-experience";
+const DEFAULT_PRESET = "mild";
 
 const KroenFieldContext = createContext(null);
 
+function paramsForPreset(id, custom) {
+  if (id === "custom") return mergeKroenFieldParams(custom);
+  return mergeKroenFieldParams(EXPERIENCE_PRESETS[id] ?? EXPERIENCE_PRESETS[DEFAULT_PRESET]);
+}
+
+function readStoredState() {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (!EXPERIENCE_PRESET_IDS.includes(data?.preset)) return null;
+    return { preset: data.preset, custom: data.custom ?? null };
+  } catch {
+    return null;
+  }
+}
+
+function initialState() {
+  return {
+    preset: DEFAULT_PRESET,
+    params: paramsForPreset(DEFAULT_PRESET),
+    custom: null,
+  };
+}
+
 export function KroenFieldProvider({ children }) {
-  const [params, setParamsState] = useState(KROEN_FIELD_DEFAULTS);
-  const [debugOpen, setDebugOpen] = useState(false);
+  const [state, setState] = useState(initialState);
+  const [ready, setReady] = useState(false);
+  const [panelOpen, setPanelOpen] = useState(false);
 
   useEffect(() => {
-    if (process.env.NODE_ENV !== "development") return;
-    const q = new URLSearchParams(window.location.search);
-    if (q.get("debug") === "field") setDebugOpen(true);
+    const stored = readStoredState();
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const preset = stored?.preset ?? (reduce ? "none" : DEFAULT_PRESET);
+    const custom = stored?.custom ? mergeKroenFieldParams(stored.custom) : null;
+    // localStorage e matchMedia esistono solo sul client: lo stato iniziale
+    // resta quello del server per evitare mismatch di idratazione.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setState({ preset, custom, params: paramsForPreset(preset, custom) });
+    setReady(true);
+
+    if (new URLSearchParams(window.location.search).get("debug") === "field") {
+      setPanelOpen(true);
+    }
   }, []);
 
-  const setParams = useCallback((next) => {
-    setParamsState((prev) =>
-      typeof next === "function" ? mergeKroenFieldParams(next(prev)) : mergeKroenFieldParams(next),
-    );
+  useEffect(() => {
+    if (!ready) return;
+    try {
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ preset: state.preset, custom: state.custom }),
+      );
+    } catch {
+      /* storage non disponibile (private mode, quota) */
+    }
+  }, [ready, state.preset, state.custom]);
+
+  const setPreset = useCallback((id) => {
+    setState((prev) => ({
+      ...prev,
+      preset: id,
+      params: paramsForPreset(id, prev.custom ?? prev.params),
+    }));
   }, []);
 
-  const resetParams = useCallback(() => {
-    setParamsState(KROEN_FIELD_DEFAULTS);
+  const setParams = useCallback((partial) => {
+    setState((prev) => {
+      const next = mergeKroenFieldParams(
+        prev.params,
+        typeof partial === "function" ? partial(prev.params) : partial,
+      );
+      return { preset: "custom", params: next, custom: next };
+    });
   }, []);
+
+  const randomize = useCallback(() => {
+    setParams((prev) => ({ ...prev, ...randomExperienceParams() }));
+  }, [setParams]);
+
+  const reset = useCallback(() => setPreset(DEFAULT_PRESET), [setPreset]);
 
   const value = useMemo(
     () => ({
-      params,
+      ready,
+      preset: state.preset,
+      params: state.params,
+      setPreset,
       setParams,
-      resetParams,
-      debugOpen,
-      setDebugOpen,
+      randomize,
+      reset,
+      panelOpen,
+      setPanelOpen,
     }),
-    [params, setParams, resetParams, debugOpen],
+    [ready, state.preset, state.params, setPreset, setParams, randomize, reset, panelOpen],
   );
 
   return (
