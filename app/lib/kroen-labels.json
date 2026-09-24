@@ -1,0 +1,10 @@
+{
+  "event": {
+    "open_time": "Apertura",
+    "start_time": "Inizio concerti",
+    "end_time": "Chiusura",
+    "prevendita": "Prevendita",
+    "contributo": "Contributo",
+    "sold_out": "Sold out"
+  }
+}

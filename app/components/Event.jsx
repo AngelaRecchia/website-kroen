@@ -21,6 +21,7 @@ export default function Event({ blok }) {
   const {
     title,
     date,
+    open_time,
     start_time,
     end_time,
     event_description,
@@ -44,6 +45,7 @@ export default function Event({ blok }) {
       )}
 
       <EventFacts
+        openTime={open_time}
         startTime={start_time}
         endTime={end_time}
         contributo={contributo}

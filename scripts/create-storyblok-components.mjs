@@ -163,39 +163,45 @@ const components = [
     schema: {
       title: { type: "text", pos: 0, required: true },
       date: { type: "datetime", pos: 1, disable_time: true },
-      start_time: {
+      open_time: {
         type: "text",
         pos: 2,
+        display_name: "Open time",
+        description: "Apertura porte, es. 21:00",
+      },
+      start_time: {
+        type: "text",
+        pos: 3,
         display_name: "Start time",
-        description: "Es. 21:00",
+        description: "Inizio concerti, es. 22:00",
       },
       end_time: {
         type: "text",
-        pos: 3,
+        pos: 4,
         display_name: "End time",
         description: "Es. 01:00",
       },
       event_description: {
         type: "textarea",
-        pos: 4,
+        pos: 5,
         display_name: "Descrizione evento",
       },
       contributo: {
         type: "text",
-        pos: 5,
+        pos: 6,
         display_name: "Contributo",
         description: "Es. 5 €, ingresso libero",
       },
       description: {
         type: "textarea",
-        pos: 6,
+        pos: 7,
         display_name: "Anteprima lista",
         description: "Testo breve nell’accordion eventi (opzionale)",
       },
-      image: { type: "asset", pos: 7, filetypes: ["images"] },
+      image: { type: "asset", pos: 8, filetypes: ["images"] },
       sold_out: {
         type: "boolean",
-        pos: 8,
+        pos: 9,
         display_name: "Sold out",
         description: "Mostra chip “Sold out” in lista eventi",
         default_value: false,
