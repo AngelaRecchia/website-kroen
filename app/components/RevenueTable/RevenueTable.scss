@@ -1,0 +1,93 @@
+.table-wrap {
+  overflow-x: auto;
+  border-top: var(--border-rule) solid var(--color-paper);
+  border-bottom: var(--border-rule) solid var(--color-paper);
+}
+
+.rev {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rev th,
+.rev td {
+  text-align: left;
+  padding: 16px 12px 16px 0;
+  border-bottom: var(--border-rule) solid var(--color-paper);
+  vertical-align: middle;
+}
+
+.rev tbody tr:last-child th,
+.rev tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.rev thead th {
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.rev tbody th {
+  font:
+    900 1.15rem / 1.1 var(--font-display);
+  text-transform: uppercase;
+}
+
+.rev .num {
+  text-align: right;
+  white-space: nowrap;
+  padding-right: 20px;
+}
+
+.rev .barcell {
+  width: 34%;
+}
+
+.bar {
+  display: block;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  width: var(--w, 0%);
+  background: var(--color-paper);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.tab {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  font:
+    900 0.9rem / 1 var(--font-display);
+  text-transform: uppercase;
+  padding: 10px 14px;
+  border: var(--border-rule) solid var(--color-paper);
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.tab[aria-pressed="true"] {
+  background: var(--color-paper);
+  color: var(--color-red);
+}
+
+.total {
+  margin: 0 0 24px;
+  display: grid;
+  gap: 4px;
+}

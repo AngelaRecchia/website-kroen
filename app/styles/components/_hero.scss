@@ -1,0 +1,52 @@
+@use "mixins" as *;
+
+.hero {
+  container-type: inline-size;
+  container-name: hero;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  margin: 0 0 clamp(28px, 5vw, 56px);
+}
+
+.hero__title {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 32px 0;
+  font-stretch: 100%;
+  font-variation-settings: "wdth" 100, "wght" 900;
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+
+  @include md {
+    margin-top: 64px;
+    margin-bottom: 64px;
+  }
+}
+
+.hero__title-line {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.hero__title-line + .hero__title-line {
+  margin-top: 0;
+}
+
+.hero h1:not(.hero__title),
+.hero h2:not(.hero__title),
+.hero a:not(.hero__title) {
+  margin: 0;
+}
+
+.hero h1 span,
+.hero h2 span,
+.hero a span {
+  display: block;
+  white-space: nowrap;
+}

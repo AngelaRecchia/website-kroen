@@ -1,0 +1,9 @@
+.kroen-shell {
+  position: relative;
+  z-index: 1;
+  max-width: var(--space-col);
+  margin: 0 auto;
+  padding: 0 var(--space-gutter);
+  width: 100%;
+  overflow-x: clip;
+}

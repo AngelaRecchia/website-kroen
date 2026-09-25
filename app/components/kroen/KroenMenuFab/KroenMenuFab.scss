@@ -1,0 +1,60 @@
+.kroen-menu-fab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1rem 0.75rem 0.85rem;
+  border: 2px solid var(--color-paper);
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--color-ink) 35%, transparent);
+  transition:
+    background 0.2s var(--ease-default),
+    color 0.2s var(--ease-default),
+    transform 0.2s var(--ease-default);
+}
+
+.kroen-menu-fab:hover,
+.kroen-menu-fab:focus-visible {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  outline: none;
+}
+
+.kroen-menu-fab__icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 1.25rem;
+  height: 1rem;
+}
+
+.kroen-menu-fab__bar {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+  border-radius: 1px;
+  transition:
+    transform 0.25s var(--ease-default),
+    opacity 0.2s;
+}
+
+.kroen-menu-fab.is-open .kroen-menu-fab__bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.kroen-menu-fab.is-open .kroen-menu-fab__bar:nth-child(2) {
+  opacity: 0;
+}
+
+.kroen-menu-fab.is-open .kroen-menu-fab__bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}

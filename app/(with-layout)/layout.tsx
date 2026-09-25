@@ -1,6 +1,7 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import KroenShell from "../components/kroen/KroenShell";
+import KroenShell from "../components/kroen/KroenShell/KroenShell";
+import StoryblokBridgeLoader from "../components/StoryblokBridgeLoader";
 import { getGlobalLayout } from "../lib/storyblok-layout";
 
 export default async function WithLayout({
@@ -12,6 +13,7 @@ export default async function WithLayout({
 
   return (
     <KroenShell>
+      <StoryblokBridgeLoader />
       {headerBlok && <Header blok={headerBlok} />}
       {children}
       {footerBlok && <Footer blok={footerBlok} />}

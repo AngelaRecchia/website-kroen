@@ -1,0 +1,55 @@
+.steps {
+  list-style: none;
+  counter-reset: s;
+  margin: 0 0 32px;
+  padding: 0;
+  border-top: var(--border-rule) solid var(--color-paper);
+}
+
+.steps li {
+  counter-increment: s;
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  column-gap: 16px;
+  padding: 20px 0;
+  border-bottom: var(--border-rule) solid var(--color-paper);
+  align-items: start;
+}
+
+.steps li::before {
+  content: counter(s);
+  grid-column: 1;
+  grid-row: 1 / -1;
+  font:
+    900 2.6rem / 1 var(--font-display);
+}
+
+.steps .step-body {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+/* fallback se title/text sono figli diretti di li (es. preview Storyblok) */
+.steps li > strong {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.steps li > span {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+}
+
+.steps strong {
+  display: block;
+  font:
+    900 1.35rem / 1.1 var(--font-display);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.steps .step-body span {
+  display: block;
+}

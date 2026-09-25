@@ -1,0 +1,63 @@
+.kroen-exp-fab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: 2px solid var(--color-paper);
+  border-radius: 50%;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  cursor: pointer;
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--color-ink) 35%, transparent);
+  transition:
+    background 0.2s var(--ease-default),
+    color 0.2s var(--ease-default),
+    border-color 0.2s var(--ease-default),
+    transform 0.2s var(--ease-default);
+}
+
+.kroen-exp-fab:hover {
+  transform: translateY(-2px);
+}
+
+.kroen-exp-fab:focus-visible {
+  outline: 2px solid var(--color-paper);
+  outline-offset: 3px;
+}
+
+.kroen-exp-fab.is-open {
+  background: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-paper);
+}
+
+.kroen-exp-fab__icon {
+  display: grid;
+  grid-template-columns: repeat(2, 7px);
+  gap: 3px;
+}
+
+.kroen-exp-fab__icon span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--exp-dot);
+  box-shadow: 0 0 0 1.5px currentColor;
+  transition:
+    border-radius 0.3s var(--ease-default),
+    transform 0.3s var(--ease-default);
+}
+
+.kroen-exp-fab:hover .kroen-exp-fab__icon span:nth-child(odd),
+.kroen-exp-fab.is-open .kroen-exp-fab__icon span:nth-child(odd) {
+  border-radius: 1px;
+  transform: rotate(45deg) scale(0.82);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kroen-exp-fab {
+    transition: none !important;
+  }
+}

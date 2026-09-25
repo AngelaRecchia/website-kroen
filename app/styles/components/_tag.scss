@@ -1,0 +1,18 @@
+.event__tag {
+  grid-area: tag;
+  justify-self: end;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font:
+    900 0.75rem / 1 var(--font-display);
+  text-transform: uppercase;
+  padding: 6px 9px;
+}
+
+.event__tag--fact {
+  grid-area: unset;
+  justify-self: unset;
+  display: inline-block;
+  font-size: 0.85rem;
+  padding: 8px 12px;
+}

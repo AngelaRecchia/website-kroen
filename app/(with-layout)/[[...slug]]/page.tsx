@@ -4,6 +4,9 @@ import { getStoryblokApi } from "../../storyblok";
 import { LAYOUT_STORY_SLUG } from "../../lib/storyblok-layout";
 import { getStoryblokVersion } from "../../lib/storyblok-version";
 
+/** Anteprima Storyblok + dev: niente pagina statica che resta “congelata”. */
+export const dynamic = "force-dynamic";
+
 type PageProps = {
   params: Promise<{ slug?: string[] }>;
 };

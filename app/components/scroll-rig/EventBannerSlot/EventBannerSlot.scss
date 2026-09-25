@@ -1,0 +1,9 @@
+.event-banner-slot {
+  position: relative;
+  z-index: 1;
+}
+
+.event-banner-slot[data-webgl-active="true"] .event-banner-slot__fallback {
+  visibility: hidden;
+  pointer-events: none;
+}

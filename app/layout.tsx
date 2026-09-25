@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import ScrollRigRoot from "./components/scroll-rig/ScrollRigRoot";
 import StoryblokProvider from "./components/StoryblokProvider";
 import "./globals.css";
+import "./styles/components/index.scss";
 
 const moonGet = localFont({
   src: "./fonts/MoonGet-Heavy.ttf",

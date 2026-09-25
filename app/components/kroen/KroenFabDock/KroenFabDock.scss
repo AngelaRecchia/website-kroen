@@ -1,0 +1,14 @@
+.kroen-fab-dock {
+  position: fixed;
+  right: max(var(--space-gutter), env(safe-area-inset-right, 0px));
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+html.is-splash .kroen-fab-dock {
+  visibility: hidden;
+  pointer-events: none;
+}

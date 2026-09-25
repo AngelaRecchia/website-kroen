@@ -1,0 +1,17 @@
+@use "mixins" as *;
+
+.kroen-page {
+  container-type: inline-size;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  color: var(--color-paper);
+  padding-top: 32px;
+  padding-bottom: clamp(32px, 6vw, 64px);
+
+  @include md {
+    padding-top: 64px;
+  }
+}

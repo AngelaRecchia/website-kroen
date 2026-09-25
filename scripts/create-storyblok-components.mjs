@@ -151,8 +151,7 @@ const components = [
     display_name: "Testo",
     schema: {
       title: { type: "text", pos: 0 },
-      lede: { type: "textarea", pos: 1 },
-      text: { type: "textarea", pos: 2 },
+      text: { type: "richtext", pos: 1 },
     },
     is_root: false,
     is_nestable: true,
@@ -162,29 +161,30 @@ const components = [
     display_name: "Event",
     schema: {
       title: { type: "text", pos: 0, required: true },
-      date: { type: "datetime", pos: 1, disable_time: true },
+      secondary_title: {
+        type: "text",
+        pos: 1,
+        display_name: "Secondary title",
+        description: "Sottotitolo sotto al titolo (pagina evento e lista in homepage)",
+      },
+      date: { type: "datetime", pos: 2, disable_time: true },
       open_time: {
         type: "text",
-        pos: 2,
+        pos: 3,
         display_name: "Open time",
         description: "Apertura porte, es. 21:00",
       },
       start_time: {
         type: "text",
-        pos: 3,
+        pos: 4,
         display_name: "Start time",
         description: "Inizio concerti, es. 22:00",
       },
       end_time: {
         type: "text",
-        pos: 4,
+        pos: 5,
         display_name: "End time",
         description: "Es. 01:00",
-      },
-      event_description: {
-        type: "textarea",
-        pos: 5,
-        display_name: "Descrizione evento",
       },
       contributo: {
         type: "text",
@@ -192,23 +192,108 @@ const components = [
         display_name: "Contributo",
         description: "Es. 5 €, ingresso libero",
       },
-      description: {
-        type: "textarea",
+      prevendita_link: {
+        type: "multilink",
         pos: 7,
-        display_name: "Anteprima lista",
-        description: "Testo breve nell’accordion eventi (opzionale)",
+        display_name: "Prevendita link",
+        description:
+          "Link biglietti: bottone «Prevendita» in pagina e accordion. Con «Sold out» attivo non compare il bottone; in info evento compare il tag Sold out.",
       },
-      image: { type: "asset", pos: 8, filetypes: ["images"] },
+      description: {
+        type: "richtext",
+        pos: 8,
+        display_name: "Descrizione",
+        description:
+          "Testo dell’evento (accordion e pagina dettaglio). Se migrato da event_description, copia il testo qui.",
+      },
+      event_description: {
+        type: "textarea",
+        pos: 12,
+        display_name: "Descrizione (legacy)",
+        description:
+          "Deprecato: usa «Descrizione». Il sito legge ancora questo campo se Descrizione è vuota.",
+      },
+      image: { type: "asset", pos: 9, filetypes: ["images"] },
       sold_out: {
         type: "boolean",
-        pos: 9,
+        pos: 10,
         display_name: "Sold out",
-        description: "Mostra chip “Sold out” in lista eventi",
+        description:
+          "Chip in lista eventi; in dettaglio/accordion riga Prevendita con tag nero al posto del bottone",
         default_value: false,
+      },
+      artist_details: {
+        type: "bloks",
+        pos: 11,
+        display_name: "Artisti",
+        restrict_components: true,
+        component_whitelist: ["artist_detail"],
+        description: "Scheda per ogni artista: nome, foto, bio, link/embed multipli",
       },
     },
     is_root: true,
     is_nestable: false,
+  },
+  {
+    name: "artist_link",
+    display_name: "Link artista",
+    schema: {
+      link_mode: {
+        type: "option",
+        pos: 0,
+        display_name: "Tipo",
+        options: [
+          { name: "Link esterno", value: "link" },
+          { name: "Embed (iframe)", value: "embed" },
+        ],
+        default_value: "link",
+      },
+      link_label: {
+        type: "text",
+        pos: 1,
+        display_name: "Etichetta",
+        description: "Es. Sito, Instagram, Bandcamp (solo link esterno)",
+      },
+      link: {
+        type: "multilink",
+        pos: 2,
+        display_name: "URL",
+        description: "Destinazione del link (solo tipo link)",
+      },
+      embed_iframe: {
+        type: "textarea",
+        pos: 3,
+        display_name: "Iframe",
+        description:
+          "Incolla l’iframe intero (Bandcamp, YouTube, …). Solo tipo embed.",
+      },
+    },
+    is_root: false,
+    is_nestable: true,
+  },
+  {
+    name: "artist_detail",
+    display_name: "Artista",
+    schema: {
+      name: { type: "text", pos: 0, required: true, display_name: "Nome" },
+      photo: {
+        type: "asset",
+        pos: 1,
+        display_name: "Foto",
+        filetypes: ["images"],
+      },
+      bio: { type: "textarea", pos: 2, display_name: "Bio" },
+      links: {
+        type: "bloks",
+        pos: 3,
+        display_name: "Link e embed",
+        restrict_components: true,
+        component_whitelist: ["artist_link"],
+        description: "Aggiungi uno o più link esterni o player embed",
+      },
+    },
+    is_root: false,
+    is_nestable: true,
   },
   {
     name: "events",
@@ -278,33 +363,29 @@ const components = [
     schema: {
       form_type: {
         type: "option",
+        display_name: "Tipo form",
         pos: 0,
+        description:
+          "Testi e campi sono definiti in app/lib/kroen-labels.json (form.tessera / form.contatti).",
         options: [
-          { name: "tessera", value: "tessera" },
-          { name: "contatti", value: "contatti" },
+          { name: "Tesseramento", value: "tessera" },
+          { name: "Contatti", value: "contatti" },
         ],
         default_value: "tessera",
       },
-      title: { type: "text", pos: 1 },
-      submit_label: { type: "text", pos: 2 },
-      success_title: { type: "text", pos: 3 },
-      success_text: { type: "textarea", pos: 4 },
-      privacy_label: { type: "textarea", pos: 5 },
-      event_options: {
-        type: "bloks",
-        pos: 6,
-        restrict_components: true,
-        component_whitelist: ["form_event_option"],
+      titolo: {
+        type: "text",
+        display_name: "Titolo",
+        pos: 1,
+        description:
+          "Titolo del form in pagina. Se vuoto, usa il default in kroen-labels.json.",
       },
-    },
-    is_root: false,
-    is_nestable: true,
-  },
-  {
-    name: "form_event_option",
-    display_name: "Opzione concerto",
-    schema: {
-      label: { type: "text", pos: 0, required: true },
+      text: {
+        type: "richtext",
+        display_name: "Testo introduttivo",
+        pos: 2,
+        description: "Opzionale. Compare sotto al titolo del form.",
+      },
     },
     is_root: false,
     is_nestable: true,

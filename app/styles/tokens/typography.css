@@ -6,11 +6,11 @@
   --type-title-letter-spacing: 0.05em;
   --type-ui-letter-spacing: var(--type-title-letter-spacing);
 
-  /* Titoli Moon Get — h1 = hero (container .hero), poi h2–h4 */
-  --fs-t-h1: clamp(1.2rem, calc(100cqw / 9.25), 5rem);
-  --fs-t-h2: min(8vw, 5rem);
-  --fs-t-h3: min(3.9vw, 2.6rem);
-  --fs-t-h4: clamp(1rem, 2.2vw + 0.35rem, 1.35rem);
+  /* Titoli Moon Get — scala a scalini (h1 hero > h2 sezione > h3 > h4) */
+  --fs-t-h1: clamp(2.25rem, 6.8vw + 0.35rem, 5.25rem);
+  --fs-t-h2: clamp(1.65rem, 4.2vw + 0.25rem, 3.05rem);
+  --fs-t-h3: clamp(1.28rem, 2.7vw + 0.2rem, 2rem);
+  --fs-t-h4: clamp(1.05rem, 1.55vw + 0.3rem, 1.4rem);
 
   /* UI e corpo */
   --font-size-nav: clamp(0.9rem, 2.35vw + 0.5rem, 1.55rem);

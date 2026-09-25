@@ -6,5 +6,167 @@
     "prevendita": "Prevendita",
     "contributo": "Contributo",
     "sold_out": "Sold out"
+  },
+  "form": {
+    "tessera": {
+      "label": "Tesseramento",
+      "title": "Richiedi la tessera",
+      "submit_label": "Richiedi la tessera",
+      "success_title": "Richiesta inviata",
+      "success_text": "Ritira la tessera al Colorificio Kroen la sera del concerto.",
+      "privacy_label": "Ho letto l'informativa sulla privacy e accetto il trattamento dei miei dati per il tesseramento.",
+      "privacy_error": "Serve il consenso per procedere.",
+      "fields": [
+        {
+          "name": "nome",
+          "label": "Nome",
+          "type": "text",
+          "autoComplete": "given-name",
+          "required": true,
+          "error": "Scrivi il tuo nome."
+        },
+        {
+          "name": "cognome",
+          "label": "Cognome",
+          "type": "text",
+          "autoComplete": "family-name",
+          "required": true,
+          "error": "Scrivi il tuo cognome."
+        },
+        {
+          "name": "sesso",
+          "label": "Sesso",
+          "type": "select",
+          "required": false,
+          "placeholderOption": "—",
+          "options": [
+            { "value": "M", "label": "M" },
+            { "value": "F", "label": "F" }
+          ]
+        },
+        {
+          "name": "richiesta_alias",
+          "label": "Richiesta alias",
+          "type": "select",
+          "required": true,
+          "placeholderOption": "Seleziona",
+          "options": [
+            { "value": "no", "label": "No" },
+            { "value": "si", "label": "Sì" }
+          ],
+          "error": "Indica se richiedi un alias."
+        },
+        {
+          "name": "genere_alias",
+          "label": "Genere alias",
+          "type": "select",
+          "required": true,
+          "showWhen": { "field": "richiesta_alias", "value": "si" },
+          "placeholderOption": "Seleziona",
+          "options": [
+            { "value": "donna", "label": "Donna" },
+            { "value": "uomo", "label": "Uomo" },
+            { "value": "non_binario", "label": "Non binario" }
+          ],
+          "error": "Scegli un genere alias."
+        },
+        {
+          "name": "nascita",
+          "label": "Data di nascita",
+          "type": "date",
+          "autoComplete": "bday",
+          "required": true,
+          "error": "Inserisci la data di nascita."
+        },
+        {
+          "name": "luogo_nascita",
+          "label": "Luogo di nascita",
+          "type": "text",
+          "required": true,
+          "error": "Inserisci il luogo di nascita."
+        },
+        {
+          "name": "email",
+          "label": "Email",
+          "type": "email",
+          "autoComplete": "email",
+          "required": true,
+          "placeholder": "nome@esempio.it",
+          "error": "Inserisci un'email valida, ad esempio nome@esempio.it."
+        },
+        {
+          "name": "cell",
+          "label": "Cellulare",
+          "type": "tel",
+          "autoComplete": "tel",
+          "required": true,
+          "placeholder": "+39 …",
+          "error": "Inserisci un numero di cellulare."
+        },
+        {
+          "name": "residenza_via",
+          "label": "Residenza — Via",
+          "type": "text",
+          "autoComplete": "street-address",
+          "required": true,
+          "error": "Inserisci la via."
+        },
+        {
+          "name": "residenza_comune",
+          "label": "Residenza — Comune",
+          "type": "text",
+          "autoComplete": "address-level2",
+          "required": true,
+          "error": "Inserisci il comune."
+        },
+        {
+          "name": "residenza_cap",
+          "label": "Residenza — CAP",
+          "type": "text",
+          "autoComplete": "postal-code",
+          "required": true,
+          "error": "Inserisci il CAP."
+        },
+        {
+          "name": "residenza_stato",
+          "label": "Residenza — Stato",
+          "type": "text",
+          "autoComplete": "country-name",
+          "required": true,
+          "error": "Inserisci lo stato."
+        }
+      ]
+    },
+    "contatti": {
+      "label": "Contatti",
+      "title": "Scrivici",
+      "submit_label": "Invia messaggio",
+      "fields": [
+        {
+          "name": "nome",
+          "label": "Nome",
+          "type": "text",
+          "autoComplete": "name",
+          "required": true,
+          "error": "Scrivi il tuo nome."
+        },
+        {
+          "name": "email",
+          "label": "Email",
+          "type": "email",
+          "autoComplete": "email",
+          "required": true,
+          "placeholder": "nome@esempio.it",
+          "error": "Inserisci un'email valida."
+        },
+        {
+          "name": "messaggio",
+          "label": "Messaggio",
+          "type": "textarea",
+          "required": true,
+          "error": "Scrivi un messaggio."
+        }
+      ]
+    }
   }
 }

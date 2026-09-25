@@ -1,0 +1,42 @@
+.kroen-ring {
+  --ring-size: calc(44px * var(--ring-scale, 1));
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--ring-size);
+  height: var(--ring-size);
+  margin: calc(var(--ring-size) / -2) 0 0 calc(var(--ring-size) / -2);
+  border: 2px solid var(--color-paper);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 50;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition:
+    width 0.25s var(--ease-default),
+    height 0.25s var(--ease-default),
+    margin 0.25s var(--ease-default),
+    background 0.25s,
+    opacity 0.3s;
+}
+
+.kroen-ring.is-on {
+  opacity: 1;
+}
+
+.kroen-ring.is-hot {
+  --ring-size: calc(84px * var(--ring-scale, 1));
+  background: var(--color-paper);
+}
+
+@media (pointer: coarse) {
+  .kroen-ring {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kroen-ring {
+    transition: none !important;
+  }
+}

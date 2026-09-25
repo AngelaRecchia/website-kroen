@@ -3,9 +3,17 @@ import { NextResponse } from "next/server";
 const FIELD_MAP: Record<string, string | undefined> = {
   nome: process.env.GOOGLE_FORM_TESSERA_ENTRY_NOME,
   cognome: process.env.GOOGLE_FORM_TESSERA_ENTRY_COGNOME,
+  sesso: process.env.GOOGLE_FORM_TESSERA_ENTRY_SESSO,
   nascita: process.env.GOOGLE_FORM_TESSERA_ENTRY_NASCITA,
+  luogo_nascita: process.env.GOOGLE_FORM_TESSERA_ENTRY_LUOGO_NASCITA,
+  richiesta_alias: process.env.GOOGLE_FORM_TESSERA_ENTRY_RICHIESTA_ALIAS,
+  genere_alias: process.env.GOOGLE_FORM_TESSERA_ENTRY_GENERE_ALIAS,
   email: process.env.GOOGLE_FORM_TESSERA_ENTRY_EMAIL,
-  evento: process.env.GOOGLE_FORM_TESSERA_ENTRY_EVENTO,
+  cell: process.env.GOOGLE_FORM_TESSERA_ENTRY_CELL,
+  residenza_via: process.env.GOOGLE_FORM_TESSERA_ENTRY_RESIDENZA_VIA,
+  residenza_comune: process.env.GOOGLE_FORM_TESSERA_ENTRY_RESIDENZA_COMUNE,
+  residenza_cap: process.env.GOOGLE_FORM_TESSERA_ENTRY_RESIDENZA_CAP,
+  residenza_stato: process.env.GOOGLE_FORM_TESSERA_ENTRY_RESIDENZA_STATO,
 };
 
 export async function POST(request: Request) {

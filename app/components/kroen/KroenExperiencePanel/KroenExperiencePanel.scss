@@ -1,0 +1,416 @@
+@use "mixins" as *;
+
+.kroen-exp-panel {
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 65;
+  width: 100%;
+  max-height: 80vh;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 0.85rem 0.9rem calc(0.9rem + 3.75rem + env(safe-area-inset-bottom, 0px));
+  border: 2px solid var(--color-ink);
+  border-width: 2px 0 0;
+  border-radius: 18px 18px 0 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: normal;
+  line-height: 1.3;
+  box-shadow: 0 16px 44px color-mix(in srgb, var(--color-ink) 32%, transparent);
+  animation: kroen-exp-sheet 0.22s var(--ease-default);
+
+  @include md {
+    right: max(var(--space-gutter), env(safe-area-inset-right, 0px));
+    left: auto;
+    bottom: calc(max(1.25rem, env(safe-area-inset-bottom, 0px)) + 3.75rem);
+    width: min(300px, calc(100vw - 2 * var(--space-gutter)));
+    max-height: min(74vh, 560px);
+    padding-bottom: 0.9rem;
+    border-width: 2px;
+    border-radius: 10px;
+    animation-name: kroen-exp-in;
+  }
+}
+
+@keyframes kroen-exp-sheet {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes kroen-exp-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+.kroen-exp-panel__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.kroen-exp-panel__close {
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 0.15s var(--ease-default),
+    color 0.15s var(--ease-default);
+}
+
+.kroen-exp-panel__close:hover,
+.kroen-exp-panel__close:focus-visible {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  outline: none;
+}
+
+.kroen-exp-presets {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.kroen-exp-chip {
+  padding: 0.32rem 0.55rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.15s var(--ease-default),
+    color 0.15s var(--ease-default);
+}
+
+.kroen-exp-chip:hover {
+  background: color-mix(in srgb, var(--color-ink) 8%, transparent);
+}
+
+.kroen-exp-chip:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 2px;
+}
+
+.kroen-exp-chip.is-active {
+  background: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-paper);
+}
+
+.kroen-exp-block {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.kroen-exp-sub {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.kroen-exp-sub + .kroen-exp-sub {
+  margin-top: 0.2rem;
+  padding-top: 0.65rem;
+  border-top: 1.5px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+}
+
+.kroen-exp-sub__label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-red);
+}
+
+.kroen-exp-row {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.kroen-exp-row > span:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.kroen-exp-row output {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.66rem;
+  color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+}
+
+.kroen-exp-row input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 3px;
+  margin: 0.4rem 0 0.15rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--color-red) 0 var(--fill, 0%),
+    color-mix(in srgb, var(--color-ink) 14%, transparent) var(--fill, 0%) 100%
+  );
+  cursor: pointer;
+}
+
+.kroen-exp-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-paper);
+  cursor: pointer;
+  transition: transform 0.12s var(--ease-default);
+}
+
+.kroen-exp-row input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+  background: var(--color-red);
+  border-color: var(--color-red);
+}
+
+.kroen-exp-row input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-paper);
+  cursor: pointer;
+}
+
+.kroen-exp-row input[type="range"]::-moz-range-track {
+  height: 3px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.kroen-exp-row input[type="range"]:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 4px;
+}
+
+.kroen-exp-row--toggle {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  cursor: pointer;
+}
+
+.kroen-exp-row--toggle > span {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.kroen-exp-switch {
+  appearance: none;
+  position: relative;
+  width: 2.3rem;
+  height: 1.3rem;
+  margin: 0;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background 0.2s var(--ease-default),
+    border-color 0.2s var(--ease-default);
+}
+
+.kroen-exp-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(1.3rem - 8px);
+  height: calc(1.3rem - 8px);
+  border-radius: 50%;
+  background: var(--color-ink);
+  transition:
+    transform 0.2s var(--ease-default),
+    background 0.2s var(--ease-default);
+}
+
+.kroen-exp-switch:checked {
+  border-color: var(--color-red);
+  background: var(--color-red);
+}
+
+.kroen-exp-switch:checked::after {
+  transform: translateX(1rem);
+  background: var(--color-paper);
+}
+
+.kroen-exp-switch:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 2px;
+}
+
+.kroen-exp-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.kroen-exp-swatch {
+  position: relative;
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0;
+  border: 1.5px solid color-mix(in srgb, var(--color-ink) 30%, transparent);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-default);
+}
+
+.kroen-exp-swatch:hover {
+  transform: scale(1.14);
+}
+
+.kroen-exp-swatch.is-active {
+  border-color: var(--color-ink);
+  box-shadow:
+    0 0 0 2px var(--color-paper),
+    0 0 0 3.5px var(--color-ink);
+}
+
+.kroen-exp-swatch--picker {
+  overflow: hidden;
+  background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+}
+
+.kroen-exp-swatch--picker input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.kroen-exp-more {
+  width: 100%;
+  margin: 0.5rem 0 0.15rem;
+  padding: 0.5rem 0;
+  border: 0;
+  border-top: 1.5px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kroen-exp-more::after {
+  content: "+";
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.kroen-exp-more.is-open::after {
+  content: "−";
+}
+
+.kroen-exp-dev {
+  margin-top: 0.4rem;
+}
+
+.kroen-exp-dev summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+}
+
+.kroen-exp-dev summary::-webkit-details-marker {
+  display: none;
+}
+
+.kroen-exp-dev .kroen-exp-block {
+  margin-top: 0.5rem;
+}
+
+.kroen-exp-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+}
+
+.kroen-exp-action {
+  flex: 1;
+  padding: 0.6rem 0.65rem;
+  border: 2px solid var(--color-red);
+  border-radius: 999px;
+  background: var(--color-red);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s var(--ease-default),
+    color 0.2s var(--ease-default),
+    transform 0.15s var(--ease-default);
+}
+
+.kroen-exp-action:hover {
+  transform: translateY(-1px);
+}
+
+.kroen-exp-action:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.kroen-exp-action--ghost {
+  background: transparent;
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kroen-exp-chip,
+  .kroen-exp-switch,
+  .kroen-exp-switch::after,
+  .kroen-exp-action {
+    transition: none !important;
+  }
+
+  .kroen-exp-panel {
+    animation: none;
+  }
+}

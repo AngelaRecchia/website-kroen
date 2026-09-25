@@ -1,6 +1,6 @@
 import { storyblokEditable } from "@storyblok/react/rsc";
 
-import HeaderNav from "./HeaderNav";
+import HeaderNav from "./HeaderNav/HeaderNav";
 
 import { resolveHeaderLinksFromBlok } from "../lib/nav-links";
 

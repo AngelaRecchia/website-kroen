@@ -4,7 +4,7 @@ import {
   partitionEventsByDate,
 } from "../lib/storyblok-events";
 import { getStoryblokVersion } from "../lib/storyblok-version";
-import EventsClient from "./EventsClient";
+import EventsClient from "./EventsClient/EventsClient";
 import { storyblokLinkUrl } from "../lib/storyblok-utils";
 
 export default async function Events({ blok }) {

@@ -31,6 +31,19 @@ if (!token) {
 
 const baseUrl = `https://mapi.storyblok.com/v1/spaces/${spaceId}`;
 
+/** @param {string} value */
+function richTextParagraph(value) {
+  return {
+    type: "doc",
+    content: [
+      {
+        type: "paragraph",
+        content: [{ type: "text", text: value }],
+      },
+    ],
+  };
+}
+
 const defaultRevenueJson = JSON.stringify({
   2023: {
     Tessere: 4200,
@@ -91,7 +104,9 @@ const pages = [
       {
         component: "rich_text",
         title: "Gallery",
-        lede: "Archivio foto e poster — contenuto in arrivo.",
+        text: richTextParagraph(
+          "Archivio foto e poster — contenuto in arrivo.",
+        ),
       },
     ],
   },
@@ -102,7 +117,9 @@ const pages = [
       {
         component: "rich_text",
         title: "Tesseramento",
-        lede: "Per entrare serve la tessera, e non si può fare all'ingresso. Ci vogliono due minuti, da telefono.",
+        text: richTextParagraph(
+          "Per entrare serve la tessera, e non si può fare all'ingresso. Ci vogliono due minuti, da telefono.",
+        ),
       },
       {
         component: "step_list",
@@ -126,17 +143,7 @@ const pages = [
       {
         component: "form",
         form_type: "tessera",
-        title: "Richiedi la tessera",
-        submit_label: "Richiedi la tessera",
-        success_title: "Richiesta inviata",
-        success_text: "Ritira la tessera al Colorificio Kroen la sera del concerto.",
-        event_options: [
-          { component: "form_event_option", label: "Sab 3 ottobre — Boris + Planning For Burial" },
-          { component: "form_event_option", label: "Sab 10 ottobre — Kob Fest / Los Fastidios + more" },
-          { component: "form_event_option", label: "Sab 17 ottobre — Sano Business" },
-          { component: "form_event_option", label: "Sab 24 ottobre — Dubwise" },
-          { component: "form_event_option", label: "Sab 31 ottobre — Halloween Party / Spoon" },
-        ],
+        titolo: "Richiedi la tessera",
       },
     ],
   },
@@ -147,13 +154,14 @@ const pages = [
       {
         component: "rich_text",
         title: "Contatti",
-        lede: "Scrivici o vieni a trovarci al Colorificio Kroen, Rovereto.",
+        text: richTextParagraph(
+          "Scrivici o vieni a trovarci al Colorificio Kroen, Rovereto.",
+        ),
       },
       {
         component: "form",
         form_type: "contatti",
-        title: "Scrivici",
-        submit_label: "Invia messaggio",
+        titolo: "Scrivici",
       },
       {
         component: "map_embed",
@@ -194,7 +202,9 @@ const pages = [
       {
         component: "rich_text",
         title: "Associazione",
-        text: "Il Colorificio Kroen è un'associazione culturale. Qui trovi trasparenza su entrate e documenti.",
+        text: richTextParagraph(
+          "Il Colorificio Kroen è un'associazione culturale. Qui trovi trasparenza su entrate e documenti.",
+        ),
       },
       {
         component: "revenue_table",

@@ -1,0 +1,19 @@
+.doc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: var(--border-rule) solid var(--color-paper);
+}
+
+.doc-list li {
+  border-bottom: var(--border-rule) solid var(--color-paper);
+}
+
+.doc-list a {
+  display: block;
+  padding: 16px 0;
+  text-decoration: none;
+  font:
+    900 1.1rem / 1.1 var(--font-display);
+  text-transform: uppercase;
+}

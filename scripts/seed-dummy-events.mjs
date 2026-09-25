@@ -38,6 +38,18 @@ const dummyEvents = [
 
 const baseUrl = `https://mapi.storyblok.com/v1/spaces/${spaceId}`;
 
+function richTextDoc(text) {
+  return {
+    type: "doc",
+    content: [
+      {
+        type: "paragraph",
+        content: [{ type: "text", text }],
+      },
+    ],
+  };
+}
+
 async function createEvent([slug, name, date, description]) {
   const res = await fetch(`${baseUrl}/stories/`, {
     method: "POST",
@@ -54,11 +66,10 @@ async function createEvent([slug, name, date, description]) {
           component: "event",
           title: name,
           date,
-          description,
+          description: richTextDoc(description),
           open_time: "21:00",
           start_time: "22:00",
           end_time: "01:00",
-          event_description: description,
           contributo: "5 €",
         },
       },

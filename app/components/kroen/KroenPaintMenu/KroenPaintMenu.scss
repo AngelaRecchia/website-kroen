@@ -1,0 +1,68 @@
+.kroen-paint {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  visibility: hidden;
+  clip-path: polygon(0 0, 0 0, 0 0);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 var(--space-gutter)
+    max(6svh, env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+
+.kroen-paint[aria-hidden="false"] {
+  pointer-events: auto;
+}
+
+.kroen-paint__list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  max-width: var(--layout-max, 72rem);
+}
+
+.kroen-paint__item {
+  overflow: hidden;
+}
+
+.kroen-paint__link {
+  display: inline-block;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2rem, min(9svh, 10vw), 5.6rem);
+  line-height: var(--type-title-line-height);
+  letter-spacing: var(--type-title-letter-spacing);
+  color: inherit;
+  transition:
+    color 0.2s var(--ease-default),
+    letter-spacing 0.3s var(--ease-default);
+}
+
+.kroen-paint__list:hover .kroen-paint__link {
+  color: color-mix(in srgb, var(--color-paper) 35%, transparent);
+}
+
+.kroen-paint__list .kroen-paint__link:hover,
+.kroen-paint__list .kroen-paint__link:focus-visible {
+  color: var(--color-paper);
+  letter-spacing: var(--type-title-letter-spacing);
+  outline: none;
+}
+
+.kroen-paint__hint {
+  display: block;
+  max-width: var(--layout-max, 72rem);
+  width: 100%;
+  margin: 3svh auto 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}

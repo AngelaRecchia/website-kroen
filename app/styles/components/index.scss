@@ -1,0 +1,12 @@
+// Primitive condivise tra più componenti; gli stili specifici stanno accanto al jsx.
+
+@use "page";
+@use "utilities";
+@use "hero";
+@use "photo";
+@use "tag";
+@use "button";
+@use "contact-list";
+@use "content";
+@use "../../components/Event/Event";
+@use "../../components/EventAccordionItem/EventAccordionItem";

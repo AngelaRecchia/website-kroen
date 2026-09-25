@@ -1,4 +1,4 @@
-import EventBannerSlot from "./scroll-rig/EventBannerSlot";
+import EventBannerSlot from "./scroll-rig/EventBannerSlot/EventBannerSlot";
 import { storyblokImageUrl } from "../lib/storyblok-utils";
 
 export default function EventBanner({

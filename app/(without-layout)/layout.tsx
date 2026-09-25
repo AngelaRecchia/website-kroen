@@ -1,4 +1,4 @@
-import KroenShell from "../components/kroen/KroenShell";
+import KroenShell from "../components/kroen/KroenShell/KroenShell";
 
 /** Anteprima Storyblok (layout-components): stesso container + WebGL delle pagine reali */
 export default function WithoutLayoutPreview({

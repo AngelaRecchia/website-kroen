@@ -1,0 +1,17 @@
+.block {
+  margin: 0 0 clamp(40px, 6vw, 72px);
+}
+
+.block :is(h2.t-h2, h2.display.t-h2) {
+  margin: 0 0 20px;
+}
+
+.prose {
+  max-width: 62ch;
+  font-size: var(--font-size-body);
+  line-height: 1.55;
+}
+
+.prose p {
+  margin: 0 0 1em;
+}

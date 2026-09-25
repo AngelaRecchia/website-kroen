@@ -5,15 +5,22 @@ import { storyblokImageUrl } from "../lib/storyblok-utils";
 function HeroTitle({ title }) {
   const words = String(title || "")
     .trim()
-    .split(/\s+/);
+    .split(/\s+/)
+    .filter(Boolean);
+
   if (words.length < 2) {
-    return <h2 className="display t-h2">{title}</h2>;
+    return (
+      <h1 className="display hero__title t-h1">
+        <span className="hero__title-line">{words[0] ?? title}</span>
+      </h1>
+    );
   }
+
   return (
-    <h2 className="display t-h2">
-      <span>{words[0]}</span>
-      <span>{words.slice(1).join(" ")}</span>
-    </h2>
+    <h1 className="display hero__title t-h1">
+      <span className="hero__title-line">{words[0]}</span>
+      <span className="hero__title-line">{words.slice(1).join("\u00A0")}</span>
+    </h1>
   );
 }
 

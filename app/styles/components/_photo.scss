@@ -1,0 +1,42 @@
+.photo {
+  position: relative;
+  aspect-ratio: 2 / 1;
+  border: var(--border-rule) solid var(--color-paper);
+  margin: 0 0 clamp(40px, 7vw, 80px);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-ink) 12%, transparent);
+  box-shadow: 4px 4px 0 color-mix(in srgb, var(--color-paper) 55%, transparent);
+}
+
+.photo > img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    315deg,
+    color-mix(in srgb, var(--color-ink) 22%, transparent) 0%,
+    transparent 52%
+  );
+}
+
+.photo figcaption {
+  position: absolute;
+  z-index: 2;
+  left: 14px;
+  bottom: 12px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-size: 0.85rem;
+  padding: 4px 10px;
+}

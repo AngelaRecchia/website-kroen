@@ -1,0 +1,65 @@
+@use "mixins" as *;
+
+.kroen-nav__logo {
+  justify-self: center;
+  flex-shrink: 0;
+  line-height: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.kroen-nav__logo:focus-visible {
+  outline: 2px solid var(--color-paper);
+  outline-offset: 4px;
+}
+
+.kroen-nav__logo-wrap {
+  justify-self: center;
+  position: relative;
+}
+
+.kroen-nav__mascot-wrap {
+  position: relative;
+  width: clamp(64px, 16vw, 88px);
+  aspect-ratio: 1;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.kroen-nav__mascot-logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0) invert(1);
+}
+
+.kroen-nav__mascot-engine {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.kroen-nav__mascot {
+  width: 100%;
+  height: auto;
+}
+
+.kroen-nav__mascot-wrap.is-splash-anim {
+  pointer-events: none;
+}
+
+.kroen-nav__logo img {
+  width: clamp(3.25rem, 10vw, 5.5rem);
+  height: auto;
+}
+
+.kroen-nav__logo--home {
+  display: none;
+  line-height: 0;
+
+  @include md {
+    display: block;
+  }
+}

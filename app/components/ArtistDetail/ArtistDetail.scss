@@ -1,0 +1,47 @@
+@use "mixins" as *;
+
+.artist {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4vw, 36px);
+
+  @include sm {
+    display: block;
+  }
+
+  @include sm {
+    &::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+  }
+}
+
+.artist .photo {
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  width: 100%;
+
+  @include sm {
+    float: left;
+    width: min(46%, 280px);
+    margin: 0 clamp(20px, 4vw, 36px) 16px 0;
+  }
+}
+
+.artist__info {
+  min-width: 0;
+
+  @include sm {
+    display: contents;
+  }
+}
+
+.artist__name {
+  margin: 0 0 16px;
+}
+
+.artist__bio {
+  margin: 0 0 8px;
+}

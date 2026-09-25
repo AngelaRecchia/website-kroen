@@ -1,9 +1,11 @@
 /** Parametri shader campo WebGL (#kroen-field) e preset "Esperienza" */
 
 export const KROEN_FIELD_DEFAULTS = {
-  baseDeepMix: 0.78,
-  dotRedMix: 0.92,
-  highlight: 0.42,
+  /** 0 = sfondo --color-red; 1 = sfondo rosso scuro */
+  baseDeepMix: 0,
+  /** 0 = dot --color-red-deep; 1 = dot rosso Kroen */
+  dotRedMix: 0,
+  highlight: 0.28,
   dotSizeBase: 0.12,
   dotSizeFlash: 0.22,
   dotSizeNear: 0.28,
@@ -13,7 +15,7 @@ export const KROEN_FIELD_DEFAULTS = {
   rippleDecay: 0.0085,
   grain: 0.028,
   cellSize: 15,
-  dotColor: "#c91515",
+  dotColor: "#8f0c0c",
   dotColorMix: 0,
   speed: 1,
   /** Rotazione tinta globale (arcobaleno) */
@@ -90,7 +92,8 @@ export const EXPERIENCE_PRESETS = {
   /* Niente strobo né flash a piena luminosità (fotosensibilità) */
   hard: {
     ...KROEN_FIELD_DEFAULTS,
-    baseDeepMix: 0.92,
+    baseDeepMix: 0.35,
+    dotRedMix: 0.55,
     highlight: 0.66,
     dotSizeNear: 0.36,
     dotSizeFlash: 0.26,
@@ -175,7 +178,7 @@ export const EXPERIENCE_CONTROLS = [
   { key: "ringScale", label: "Size anello", type: "range", min: 0.5, max: 2, step: 0.05, tier: "effects" },
 
   { key: "baseDeepMix", label: "Base deep", type: "range", min: 0, max: 1, step: 0.01, tier: "advanced", advanced: true },
-  { key: "dotRedMix", label: "Dot → rosso", type: "range", min: 0, max: 1, step: 0.01, tier: "advanced", advanced: true },
+  { key: "dotRedMix", label: "Dot chiaro", type: "range", min: 0, max: 1, step: 0.01, tier: "advanced", advanced: true },
   { key: "dotSizeBase", label: "Dot base", type: "range", min: 0.05, max: 0.35, step: 0.01, tier: "advanced", advanced: true },
   { key: "dotSizeFlash", label: "Dot flash", type: "range", min: 0, max: 0.5, step: 0.01, tier: "advanced", advanced: true },
   { key: "dotSizeNear", label: "Dot near", type: "range", min: 0, max: 0.6, step: 0.01, tier: "advanced", advanced: true },

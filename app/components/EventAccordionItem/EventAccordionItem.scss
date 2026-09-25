@@ -1,0 +1,219 @@
+@use "mixins" as *;
+
+.event {
+  border-bottom: var(--border-rule) solid var(--color-paper);
+}
+
+.event__hit {
+  isolation: isolate;
+  position: relative;
+}
+
+.event__head-bg {
+  position: absolute;
+  inset: 0 calc(var(--space-gutter) * -1);
+  background: var(--color-paper);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.35s var(--ease-default);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.event__hit:hover .event__head-bg,
+.event__hit:focus-within .event__head-bg,
+.event__hit:has([aria-expanded="true"]) .event__head-bg {
+  transform: scaleY(1);
+}
+
+.event__head {
+  all: unset;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    "date tag plus"
+    "title title title";
+  align-items: center;
+  column-gap: clamp(8px, 2vw, 16px);
+  row-gap: 8px;
+  width: 100%;
+  padding: 22px 0 20px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  color: var(--color-paper);
+}
+
+.event__head:focus-visible {
+  outline: 3px solid var(--color-paper);
+  outline-offset: -3px;
+}
+
+.event__hit:hover .event__date,
+.event__hit:hover .event__title,
+.event__hit:hover .event__subtitle,
+.event__hit:focus-within .event__date,
+.event__hit:focus-within .event__title,
+.event__hit:focus-within .event__subtitle,
+.event__hit:has([aria-expanded="true"]) .event__date,
+.event__hit:has([aria-expanded="true"]) .event__title,
+.event__hit:has([aria-expanded="true"]) .event__subtitle {
+  color: var(--color-red);
+}
+
+.event__hit:hover .event__plus::before,
+.event__hit:hover .event__plus::after,
+.event__hit:focus-within .event__plus::before,
+.event__hit:focus-within .event__plus::after,
+.event__hit:has([aria-expanded="true"]) .event__plus::before,
+.event__hit:has([aria-expanded="true"]) .event__plus::after {
+  background: var(--color-red);
+}
+
+.event__head:hover .event__titles,
+.event__head[aria-expanded="true"] .event__titles {
+  transform: translateX(6px);
+}
+
+.event__date {
+  grid-area: date;
+  font-family: var(--font-date);
+  font-size: var(--font-size-date);
+  font-weight: 400;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+.event__head:not(:has(.event__tag)) {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "date plus"
+    "title title";
+}
+
+.event__head:not(:has(.event__tag)) .event__plus {
+  grid-area: plus;
+}
+
+.event__titles {
+  grid-area: title;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  transition: transform 0.35s var(--ease-default);
+}
+
+.event__title {
+  min-width: 0;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
+.event__subtitle {
+  display: block;
+  font-size: var(--fs-t-h4);
+  line-height: var(--type-title-line-height);
+  opacity: 0.92;
+  overflow-wrap: anywhere;
+}
+
+.event__plus {
+  grid-area: plus;
+  position: relative;
+  width: 26px;
+  height: 26px;
+  justify-self: end;
+}
+
+.event__plus::before,
+.event__plus::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  background: currentColor;
+  transition: transform 0.3s var(--ease-default);
+}
+
+.event__plus::after {
+  transform: rotate(90deg);
+}
+
+.event__head[aria-expanded="true"] .event__plus::after {
+  transform: rotate(0);
+}
+
+.event__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s var(--ease-default);
+}
+
+.event__panel.is-open {
+  grid-template-rows: 1fr;
+}
+
+.event__inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.event__body {
+  padding-block: 32px;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr);
+
+  @include md {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(28px, 5vw, 48px);
+    align-items: start;
+  }
+}
+
+.event__facts {
+  min-width: 0;
+
+  @include md {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+.event__main {
+  min-width: 0;
+  display: grid;
+  gap: 20px;
+  justify-items: start;
+
+  @include md {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+.event__description {
+  max-width: 62ch;
+  min-width: 0;
+}
+
+.event__description p {
+  margin: 0 0 0.85em;
+}
+
+.event__description p:last-child {
+  margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event__head-bg,
+  .event__titles,
+  .event__panel {
+    transition: none !important;
+  }
+}
