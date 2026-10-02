@@ -1,3 +1,5 @@
+@use "mixins" as *;
+
 .steps {
   list-style: none;
   counter-reset: s;
@@ -14,6 +16,7 @@
   padding: 20px 0;
   border-bottom: var(--border-rule) solid var(--color-paper);
   align-items: start;
+  @include reading(1.5);
 }
 
 .steps li::before {
@@ -22,6 +25,7 @@
   grid-row: 1 / -1;
   font:
     900 2.6rem / 1 var(--font-display);
+  letter-spacing: var(--type-title-letter-spacing);
 }
 
 .steps .step-body {
@@ -46,6 +50,7 @@
   display: block;
   font:
     900 1.35rem / 1.1 var(--font-display);
+  letter-spacing: var(--type-title-letter-spacing);
   text-transform: uppercase;
   margin-bottom: 4px;
 }

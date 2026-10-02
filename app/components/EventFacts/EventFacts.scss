@@ -29,12 +29,14 @@
 
 .facts dt {
   font-size: 0.85rem;
-  opacity: 0.9;
+  letter-spacing: 0.02em;
+  opacity: 1;
 }
 
 .facts dd {
   margin: 0;
   font:
     900 1.35rem / 1.1 var(--font-display);
+  letter-spacing: var(--type-title-letter-spacing);
   text-transform: uppercase;
 }

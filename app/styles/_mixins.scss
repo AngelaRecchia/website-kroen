@@ -21,3 +21,9 @@ $breakpoint-lg: 1024px;
     @content;
   }
 }
+
+@mixin reading($line-height: 1.65) {
+  font-weight: 600;
+  line-height: $line-height;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}

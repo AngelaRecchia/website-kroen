@@ -24,6 +24,7 @@ const arhaicRomanesc = localFont({
 
 const archivo = Archivo({
   subsets: ["latin"],
+  weight: ["400", "600"],
   variable: "--font-archivo",
 });
 

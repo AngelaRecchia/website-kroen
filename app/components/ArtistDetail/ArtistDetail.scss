@@ -4,12 +4,16 @@
   display: flex;
   flex-direction: column;
   gap: clamp(24px, 4vw, 36px);
+}
+
+.artist__lede {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4vw, 36px);
 
   @include sm {
     display: block;
-  }
 
-  @include sm {
     &::after {
       content: "";
       display: table;
@@ -44,4 +48,5 @@
 
 .artist__bio {
   margin: 0 0 8px;
+  @include reading;
 }

@@ -31,13 +31,23 @@ export const KROEN_FIELD_DEFAULTS = {
   shockAmp: 12,
   ringEnabled: true,
   ringScale: 1,
+  /** 0 = retino su tutto il campo; più alto = punti solo vicino al cursore */
+  halo: 0,
+  /** Giri al secondo su rosso, verde, blu. 0 = rosso fisso */
+  tintDrift: 0,
 };
 
-export const EXPERIENCE_PRESET_IDS = ["none", "mild", "psych", "hard", "custom"];
+export const EXPERIENCE_PRESET_IDS = [
+  "none",
+  "mild",
+  "psych",
+  "hard",
+  "custom",
+];
 
 export const EXPERIENCE_PRESET_LABELS = {
   none: "Off",
-  mild: "Soft",
+  mild: "Tinta",
   psych: "Trip",
   hard: "Max",
   custom: "Tu",
@@ -54,21 +64,31 @@ export const EXPERIENCE_PRESETS = {
     dotColorMix: 0,
     shockAmp: 0,
     ringEnabled: false,
+    halo: 0,
+    tintDrift: 0,
+    dotSizeBase: 0,
+    dotSizeFlash: 0,
+    dotSizeNear: 0,
   },
   mild: {
     ...KROEN_FIELD_DEFAULTS,
-    speed: 0.8,
-    rippleAmp: 7,
-    rippleFreq: 0.036,
-    rippleDecay: 0.0075,
-    grain: 0.008,
-    highlight: 0.4,
-    dotSizeNear: 0.3,
-    mouseLag: 0.1,
-    shockAmp: 9,
-    dotColorMix: 0.06,
+    speed: 0,
+    rippleAmp: 16,
+    rippleFreq: 0.05,
+    rippleDecay: 0.006,
+    grain: 0,
+    highlight: 0.1,
+    dotSizeBase: 0.22,
+    dotSizeFlash: 0,
+    dotSizeNear: 0.24,
+    dotSoftness: 0.06,
+    mouseLag: 0.12,
+    shockAmp: 14,
+    dotColorMix: 0,
     colorShift: 0,
     hueSpeed: 0,
+    halo: 0.016,
+    tintDrift: 0,
   },
   psych: {
     ...KROEN_FIELD_DEFAULTS,
@@ -88,6 +108,8 @@ export const EXPERIENCE_PRESETS = {
     mouseLag: 0.12,
     shockAmp: 18,
     ringScale: 1.15,
+    halo: 0,
+    tintDrift: 0,
   },
   /* Niente strobo né flash a piena luminosità (fotosensibilità) */
   hard: {
@@ -111,6 +133,8 @@ export const EXPERIENCE_PRESETS = {
     shockAmp: 30,
     dotColorMix: 0.3,
     ringScale: 1.35,
+    halo: 0,
+    tintDrift: 0,
   },
 };
 
@@ -124,8 +148,23 @@ export const EXPERIENCE_SWATCHES = [
 ];
 
 export const EXPERIENCE_CONTROLS = [
-  { key: "dotColor", label: "Colore", type: "color", tier: "main", sub: "Colore" },
-  { key: "dotColorMix", label: "Forza colore", type: "range", min: 0, max: 1, step: 0.01, tier: "main", sub: "Colore" },
+  {
+    key: "dotColor",
+    label: "Colore",
+    type: "color",
+    tier: "main",
+    sub: "Colore",
+  },
+  {
+    key: "dotColorMix",
+    label: "Forza colore",
+    type: "range",
+    min: 0,
+    max: 1,
+    step: 0.01,
+    tier: "main",
+    sub: "Colore",
+  },
   {
     key: "colorShift",
     label: "Cambio colore",
@@ -162,29 +201,217 @@ export const EXPERIENCE_CONTROLS = [
     tier: "main",
     sub: "Movimento",
   },
-  { key: "rippleAmp", label: "Onde", type: "range", min: 0, max: 30, step: 0.5, tier: "main", sub: "Movimento" },
-  { key: "ringEnabled", label: "Anello", type: "toggle", tier: "main", sub: "Movimento" },
+  {
+    key: "rippleAmp",
+    label: "Onde",
+    type: "range",
+    min: 0,
+    max: 30,
+    step: 0.5,
+    tier: "main",
+    sub: "Movimento",
+  },
+  {
+    key: "ringEnabled",
+    label: "Anello",
+    type: "toggle",
+    tier: "main",
+    sub: "Movimento",
+  },
 
-  { key: "highlight", label: "Luce cursore", type: "range", min: 0, max: 1, step: 0.01, tier: "effects" },
+  {
+    key: "halo",
+    label: "Alone",
+    type: "range",
+    min: 0,
+    max: 0.03,
+    step: 0.001,
+    randomMax: 0,
+    tier: "effects",
+  },
+  {
+    key: "tintDrift",
+    label: "Viraggio",
+    type: "range",
+    min: 0,
+    max: 1 / 60,
+    step: 0.0005,
+    randomMax: 0.008,
+    randomBias: "low",
+    tier: "effects",
+  },
+  {
+    key: "highlight",
+    label: "Luce cursore",
+    type: "range",
+    min: 0,
+    max: 1,
+    step: 0.01,
+    tier: "effects",
+  },
   { key: "invert", label: "Inverti", type: "toggle", tier: "effects" },
-  { key: "mouseLag", label: "Inerzia cursore", type: "range", min: 0.02, max: 0.3, step: 0.01, tier: "effects" },
-  { key: "shockAmp", label: "Urto click", type: "range", min: 0, max: 40, step: 1, tier: "effects" },
-  { key: "kaleido", label: "Caleidoscopio", type: "range", min: 0, max: 12, step: 1, tier: "effects" },
-  { key: "chroma", label: "Split RGB", type: "range", min: 0, max: 1, step: 0.01, tier: "effects" },
-  { key: "swirl", label: "Vortice", type: "range", min: -3, max: 3, step: 0.05, tier: "effects" },
-  { key: "dotShape", label: "Quadrato", type: "range", min: 0, max: 1, step: 0.01, tier: "effects" },
-  { key: "grain", label: "Grana", type: "range", min: 0, max: 0.12, step: 0.002, tier: "effects" },
-  { key: "cellSize", label: "Griglia", type: "range", min: 8, max: 28, step: 1, tier: "effects" },
-  { key: "ringScale", label: "Size anello", type: "range", min: 0.5, max: 2, step: 0.05, tier: "effects" },
+  {
+    key: "mouseLag",
+    label: "Inerzia cursore",
+    type: "range",
+    min: 0.02,
+    max: 0.3,
+    step: 0.01,
+    tier: "effects",
+  },
+  {
+    key: "shockAmp",
+    label: "Urto click",
+    type: "range",
+    min: 0,
+    max: 40,
+    step: 1,
+    tier: "effects",
+  },
+  {
+    key: "kaleido",
+    label: "Caleidoscopio",
+    type: "range",
+    min: 0,
+    max: 12,
+    step: 1,
+    tier: "effects",
+  },
+  {
+    key: "chroma",
+    label: "Split RGB",
+    type: "range",
+    min: 0,
+    max: 1,
+    step: 0.01,
+    tier: "effects",
+  },
+  {
+    key: "swirl",
+    label: "Vortice",
+    type: "range",
+    min: -3,
+    max: 3,
+    step: 0.05,
+    tier: "effects",
+  },
+  {
+    key: "dotShape",
+    label: "Quadrato",
+    type: "range",
+    min: 0,
+    max: 1,
+    step: 0.01,
+    tier: "effects",
+  },
+  {
+    key: "grain",
+    label: "Grana",
+    type: "range",
+    min: 0,
+    max: 0.12,
+    step: 0.002,
+    tier: "effects",
+  },
+  {
+    key: "cellSize",
+    label: "Griglia",
+    type: "range",
+    min: 8,
+    max: 28,
+    step: 1,
+    tier: "effects",
+  },
+  {
+    key: "ringScale",
+    label: "Size anello",
+    type: "range",
+    min: 0.5,
+    max: 2,
+    step: 0.05,
+    tier: "effects",
+  },
 
-  { key: "baseDeepMix", label: "Base deep", type: "range", min: 0, max: 1, step: 0.01, tier: "advanced", advanced: true },
-  { key: "dotRedMix", label: "Dot chiaro", type: "range", min: 0, max: 1, step: 0.01, tier: "advanced", advanced: true },
-  { key: "dotSizeBase", label: "Dot base", type: "range", min: 0.05, max: 0.35, step: 0.01, tier: "advanced", advanced: true },
-  { key: "dotSizeFlash", label: "Dot flash", type: "range", min: 0, max: 0.5, step: 0.01, tier: "advanced", advanced: true },
-  { key: "dotSizeNear", label: "Dot near", type: "range", min: 0, max: 0.6, step: 0.01, tier: "advanced", advanced: true },
-  { key: "dotSoftness", label: "Morbidezza", type: "range", min: 0.02, max: 0.2, step: 0.005, tier: "advanced", advanced: true },
-  { key: "rippleFreq", label: "Ripple freq", type: "range", min: 0.005, max: 0.15, step: 0.001, tier: "advanced", advanced: true },
-  { key: "rippleDecay", label: "Ripple decay", type: "range", min: 0.001, max: 0.03, step: 0.0005, tier: "advanced", advanced: true },
+  {
+    key: "baseDeepMix",
+    label: "Base deep",
+    type: "range",
+    min: 0,
+    max: 1,
+    step: 0.01,
+    tier: "advanced",
+    advanced: true,
+  },
+  {
+    key: "dotRedMix",
+    label: "Dot chiaro",
+    type: "range",
+    min: 0,
+    max: 1,
+    step: 0.01,
+    tier: "advanced",
+    advanced: true,
+  },
+  {
+    key: "dotSizeBase",
+    label: "Dot base",
+    type: "range",
+    min: 0.05,
+    max: 0.35,
+    step: 0.01,
+    tier: "advanced",
+    advanced: true,
+  },
+  {
+    key: "dotSizeFlash",
+    label: "Dot flash",
+    type: "range",
+    min: 0,
+    max: 0.5,
+    step: 0.01,
+    tier: "advanced",
+    advanced: true,
+  },
+  {
+    key: "dotSizeNear",
+    label: "Dot near",
+    type: "range",
+    min: 0,
+    max: 0.6,
+    step: 0.01,
+    tier: "advanced",
+    advanced: true,
+  },
+  {
+    key: "dotSoftness",
+    label: "Morbidezza",
+    type: "range",
+    min: 0.02,
+    max: 0.2,
+    step: 0.005,
+    tier: "advanced",
+    advanced: true,
+  },
+  {
+    key: "rippleFreq",
+    label: "Ripple freq",
+    type: "range",
+    min: 0.005,
+    max: 0.15,
+    step: 0.001,
+    tier: "advanced",
+    advanced: true,
+  },
+  {
+    key: "rippleDecay",
+    label: "Ripple decay",
+    type: "range",
+    min: 0.001,
+    max: 0.03,
+    step: 0.0005,
+    tier: "advanced",
+    advanced: true,
+  },
 ];
 
 export function mergeKroenFieldParams(...partials) {
@@ -201,7 +428,8 @@ function randomHex() {
   const l = 0.45 + Math.random() * 0.22;
   const f = (n) => {
     const k = (n + h / 30) % 12;
-    const c = l - s * Math.min(l, 1 - l) * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+    const c =
+      l - s * Math.min(l, 1 - l) * Math.max(-1, Math.min(k - 3, 9 - k, 1));
     return Math.round(c * 255)
       .toString(16)
       .padStart(2, "0");
@@ -211,7 +439,9 @@ function randomHex() {
 
 function randomColor() {
   if (Math.random() < 0.45) {
-    return EXPERIENCE_SWATCHES[Math.floor(Math.random() * EXPERIENCE_SWATCHES.length)];
+    return EXPERIENCE_SWATCHES[
+      Math.floor(Math.random() * EXPERIENCE_SWATCHES.length)
+    ];
   }
   return randomHex();
 }
@@ -242,6 +472,8 @@ export function randomExperienceParams() {
     if (c.key === "dotColorMix") continue;
     out[c.key] = randomControlValue(c);
   }
+
+  out.halo = 0;
 
   if (out.colorShift < 0.04 && out.hueSpeed < 0.05 && Math.random() < 0.35) {
     out.colorShift = roundStep(0.06 + Math.random() * 0.14, 0.01);

@@ -99,24 +99,6 @@
   }
 }
 
-.event__tag.event-page__soldout {
-  position: absolute;
-  top: clamp(20px, 4vw, 36px);
-  right: clamp(12px, 3vw, 24px);
-  z-index: 2;
-  font-size: clamp(1.4rem, 3.2vw, 2.1rem);
-  padding: 14px 22px;
-  transform: rotate(16deg);
-  transform-origin: center;
-  white-space: nowrap;
-  box-shadow: 3px 3px 0 color-mix(in srgb, var(--color-paper) 55%, transparent);
-}
-
-.event-page__poster-wrap:not(:has(.event-page__poster)) .event-page__soldout {
-  position: static;
-  display: inline-block;
-}
-
 .event-page__copy {
   grid-area: copy;
   min-width: 0;
@@ -152,7 +134,13 @@
 
 .artists {
   display: grid;
-  gap: clamp(40px, 6vw, 72px);
+  gap: 0;
   border-top: var(--border-rule) solid var(--color-paper);
-  padding-top: clamp(28px, 4vw, 48px);
+  padding-top: clamp(32px, 5vw, 56px);
+}
+
+.artists .artist:not(:last-child) {
+  border-bottom: var(--border-rule) solid var(--color-paper);
+  padding-bottom: clamp(48px, 8vw, 88px);
+  margin-bottom: clamp(48px, 8vw, 88px);
 }

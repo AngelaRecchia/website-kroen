@@ -6,7 +6,6 @@
   border: var(--border-rule) solid var(--color-paper);
   overflow: hidden;
   background: color-mix(in srgb, var(--color-ink) 12%, transparent);
-  box-shadow: 4px 4px 0 color-mix(in srgb, var(--color-paper) 55%, transparent);
 }
 
 .event-hero__img {

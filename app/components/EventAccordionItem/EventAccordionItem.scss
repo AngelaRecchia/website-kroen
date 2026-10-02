@@ -164,10 +164,11 @@
 }
 
 .event__body {
-  padding-block: 32px;
+  padding: 6px 0 28px;
   display: grid;
-  gap: 24px;
+  gap: 18px;
   grid-template-columns: minmax(0, 1fr);
+  @include reading;
 
   @include md {
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);

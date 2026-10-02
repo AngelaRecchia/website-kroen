@@ -5,7 +5,6 @@
   margin: 0 0 clamp(40px, 7vw, 80px);
   overflow: hidden;
   background: color-mix(in srgb, var(--color-ink) 12%, transparent);
-  box-shadow: 4px 4px 0 color-mix(in srgb, var(--color-paper) 55%, transparent);
 }
 
 .photo > img {

@@ -3,7 +3,7 @@
 :root {
   --type-title-line-height: 1.1;
   --type-title-line-height-h1: 0.9;
-  --type-title-letter-spacing: 0.05em;
+  --type-title-letter-spacing: 0.02em;
   --type-ui-letter-spacing: var(--type-title-letter-spacing);
 
   /* Titoli Moon Get — scala a scalini (h1 hero > h2 sezione > h3 > h4) */

@@ -47,7 +47,7 @@ export default function HeaderNav({ links = [] }) {
 
 
 
-  const drawerItems = isMobile ? all : extra;
+  const drawerItems = isMobile ? all.slice(1) : extra;
 
   const showMenuFab = drawerItems.length > 0;
 
@@ -143,7 +143,7 @@ export default function HeaderNav({ links = [] }) {
 
           aria-label="Navigazione sinistra"
 
-          className="kroen-nav__col kroen-nav__col--start kroen-nav__col--desktop"
+          className="kroen-nav__col kroen-nav__col--start"
 
         >
 

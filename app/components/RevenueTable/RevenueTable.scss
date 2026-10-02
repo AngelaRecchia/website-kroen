@@ -34,6 +34,7 @@
 .rev tbody th {
   font:
     900 1.15rem / 1.1 var(--font-display);
+  letter-spacing: var(--type-title-letter-spacing);
   text-transform: uppercase;
 }
 
@@ -73,6 +74,7 @@
   cursor: pointer;
   font:
     900 0.9rem / 1 var(--font-display);
+  letter-spacing: var(--type-title-letter-spacing);
   text-transform: uppercase;
   padding: 10px 14px;
   border: var(--border-rule) solid var(--color-paper);

@@ -1,5 +1,6 @@
 import { storyblokEditable } from "@storyblok/react/rsc";
 import { storyblokLinkUrl } from "../lib/storyblok-utils";
+import "./SocialLinks.scss";
 
 export default function SocialLinks({ blok }) {
   const { links = [] } = blok;
@@ -7,7 +8,7 @@ export default function SocialLinks({ blok }) {
   if (!links.length) return null;
 
   return (
-    <ul {...storyblokEditable(blok)} className="contact-list">
+    <ul {...storyblokEditable(blok)} className="contact-list social-links">
       {links.map((item) => (
         <li key={item._uid}>
           <a href={storyblokLinkUrl(item.link)} target="_blank" rel="noopener noreferrer">

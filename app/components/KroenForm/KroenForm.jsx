@@ -7,6 +7,7 @@ import {
   getVisibleKroenFormFields,
   isKroenFormFieldVisible,
 } from "../../lib/kroen-form-fields";
+import KroenSelect from "./KroenSelect";
 import "./KroenForm.scss";
 
 function validateEmail(value) {
@@ -154,22 +155,16 @@ export default function KroenForm({ blok, introHtml }) {
               onChange={(ev) => setFieldValue(field.name, ev.target.value)}
             />
           ) : field.type === "select" ? (
-            <select
+            <KroenSelect
               id={`${blok._uid}-${field.name}`}
               name={field.name}
               required={field.required}
               value={values[field.name] ?? ""}
-              onChange={(ev) => setFieldValue(field.name, ev.target.value)}
-            >
-              {field.placeholderOption !== undefined && (
-                <option value="">{field.placeholderOption}</option>
-              )}
-              {(field.options ?? []).map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+              onChange={(next) => setFieldValue(field.name, next)}
+              options={field.options ?? []}
+              placeholder={field.placeholderOption}
+              invalid={Boolean(errors[field.name])}
+            />
           ) : (
             <input
               id={`${blok._uid}-${field.name}`}

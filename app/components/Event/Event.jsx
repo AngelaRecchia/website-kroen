@@ -11,8 +11,6 @@ import { formatEventDateText } from "../../lib/event-date";
 import { resolveEventDescription } from "../../lib/event-description";
 
 import KroenRichTextContent from "../KroenRichTextContent";
-
-import { kroenLabel } from "../../lib/kroen-labels";
 import "./Event.scss";
 
 export default function Event({ blok }) {
@@ -76,11 +74,6 @@ export default function Event({ blok }) {
               priority
               className="event-page__poster"
             />
-            {isSoldOut && (
-              <span className="event__tag event-page__soldout">
-                {kroenLabel("event.sold_out")}
-              </span>
-            )}
           </div>
 
           <div className="event-page__content">

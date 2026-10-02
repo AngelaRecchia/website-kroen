@@ -50,3 +50,17 @@
   display: block;
   white-space: nowrap;
 }
+
+.hero--on-photo {
+  position: absolute;
+  z-index: 2;
+  top: 32px;
+  left: 32px;
+  width: calc(100% - 32px);
+  margin: 0;
+  pointer-events: none;
+
+  .hero__title {
+    margin: 0;
+  }
+}

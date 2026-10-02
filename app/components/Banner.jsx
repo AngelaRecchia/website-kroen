@@ -27,15 +27,15 @@ function HeroTitle({ title }) {
 export default function Banner({ blok }) {
   const { title, image, caption } = blok;
 
+  const hero = title ? (
+    <div className={image?.filename ? "hero hero--on-photo" : "hero"}>
+      <HeroTitle title={title} />
+    </div>
+  ) : null;
+
   return (
     <div {...storyblokEditable(blok)} className="block">
-      {title && (
-        <div className="hero">
-          <HeroTitle title={title} />
-        </div>
-      )}
-
-      {image?.filename && (
+      {image?.filename ? (
         <figure className="photo">
           <Image
             src={storyblokImageUrl(image.filename)}
@@ -46,8 +46,11 @@ export default function Banner({ blok }) {
             sizes="(max-width: 1040px) 100vw, 1040px"
             unoptimized
           />
+          {hero}
           {caption && <figcaption>{caption}</figcaption>}
         </figure>
+      ) : (
+        hero
       )}
     </div>
   );

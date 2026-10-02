@@ -16,15 +16,15 @@ export default function ArtistLinkItem({ blok, artistName }) {
   if (isEmbed) {
     if (!embed) return null;
     return (
-      <div className="embed">
-        <iframe
-          title={embed.title || (artistName ? `${artistName} – player` : "Player")}
-          src={embed.src}
-          loading="lazy"
-          allow={embed.allow || "autoplay; encrypted-media"}
-          allowFullScreen={embed.allowFullScreen}
-        />
-      </div>
+      <iframe
+        className={`embed ${embed.className}`}
+        style={embed.style}
+        title={embed.title || (artistName ? `${artistName} – player` : "Player")}
+        src={embed.src}
+        loading="lazy"
+        allow={embed.allow || "autoplay; encrypted-media"}
+        allowFullScreen={embed.allowFullScreen}
+      />
     );
   }
 

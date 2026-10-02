@@ -2,8 +2,8 @@
 
 .kroen-nav {
   display: grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+  justify-items: stretch;
   gap: clamp(8px, 2vw, 20px);
   align-items: center;
   padding: clamp(16px, 4vw, 28px) 0 0;
@@ -11,7 +11,6 @@
 
   @include md {
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    justify-items: normal;
   }
 }
 
@@ -23,8 +22,18 @@
 }
 
 .kroen-nav__col--start {
-  align-items: flex-start;
-  justify-self: start;
+  grid-column: 2;
+  grid-row: 1;
+  align-items: flex-end;
+  justify-self: end;
+  text-align: right;
+
+  @include md {
+    grid-column: 1;
+    align-items: flex-start;
+    justify-self: start;
+    text-align: left;
+  }
 }
 
 .kroen-nav__col--end {
@@ -66,8 +75,15 @@
   text-overflow: ellipsis;
 }
 
-.kroen-nav__col--end .kroen-nav__link::after {
+.kroen-nav__col--end .kroen-nav__link::after,
+.kroen-nav__col--start .kroen-nav__link::after {
   transform-origin: right;
+}
+
+@include md {
+  .kroen-nav__col--start .kroen-nav__link::after {
+    transform-origin: left;
+  }
 }
 
 .kroen-nav__link::after {

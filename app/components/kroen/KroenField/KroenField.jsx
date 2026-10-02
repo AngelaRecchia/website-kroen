@@ -22,6 +22,33 @@ function readCssRgb(varName, fallback) {
   return hexToRgb(raw || fallback);
 }
 
+/** Verde saturo. Il blu ha la stessa luminosità relativa di --color-red (#c91515). */
+const TINT_GREEN = hexToRgb("#009B3A");
+const TINT_BLUE = hexToRgb("#0C57ED");
+
+function lerpRgb(a, b, t) {
+  return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+}
+
+function deepen(rgb) {
+  const k = 0.62;
+  return [rgb[0] * k, rgb[1] * k, rgb[2] * k];
+}
+
+/** Ease continuo: lento vicino ai pieni, rapido sugli intermedi. */
+function tintEase(t) {
+  const p = 5;
+  return t < 0.5 ? 0.5 * (2 * t) ** p : 1 - 0.5 * (2 * (1 - t)) ** p;
+}
+
+function tintAt(cycles, red) {
+  const stops = [red, TINT_GREEN, TINT_BLUE];
+  const n = stops.length;
+  const pos = (((cycles % 1) + 1) % 1) * n;
+  const i = Math.floor(pos) % n;
+  return lerpRgb(stops[i], stops[(i + 1) % n], tintEase(pos - Math.floor(pos)));
+}
+
 const VERTEX_SHADER = "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}";
 
 const FRAGMENT_SHADER = `
@@ -32,8 +59,8 @@ uniform float uBaseDeepMix;uniform float uDotRedMix;uniform float uHighlight;uni
 uniform float uDotSizeBase;uniform float uDotSizeFlash;uniform float uDotSizeNear;
 uniform float uDotSoftness;uniform float uRippleAmp;uniform float uRippleFreq;
 uniform float uRippleDecay;uniform float uGrain;uniform float uCellSize;
-uniform float uHue;uniform float uDotHue;uniform float uKaleido;uniform float uChroma;uniform float uSwirl;
-uniform float uShape;uniform float uInvert;
+uniform float uHue;uniform float uDotHue;uniform float uRippleTime;uniform float uKaleido;uniform float uChroma;uniform float uSwirl;
+uniform float uShape;uniform float uInvert;uniform float uHalo;
 uniform vec3 uShock;uniform float uShockAmp;
 
 float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -60,14 +87,16 @@ vec2 warp(vec2 p,vec2 m){
  float tw=uSwirl*exp(-dist*.004);
  float c=cos(tw),s=sin(tw);
  d=vec2(c*d.x-s*d.y,s*d.x+c*d.y);
- float rip=sin(dist*uRippleFreq-uTime*2.4)*exp(-dist*uRippleDecay);
- d+=normalize(d+vec2(.0001))*rip*uRippleAmp*uDpr;
+ float rip=sin(dist*uRippleFreq+uRippleTime*2.4)*exp(-dist*uRippleDecay);
+ d+=normalize(d+vec2(.0001))*(rip+0.7)*uRippleAmp*uDpr;
  if(uShock.z>=0.){
   vec2 sd=p-uShock.xy;
   float sdist=length(sd)/uDpr;
-  float front=uShock.z*700.;
-  float band=exp(-pow((sdist-front)/45.,2.))*exp(-uShock.z*1.6);
-  d+=normalize(sd+vec2(.0001))*band*uShockAmp*uDpr;
+  float front=uShock.z*420.;
+  float delta=sdist-front;
+  float env=exp(-pow(delta/120.,2.))*exp(-uShock.z*0.9);
+  float wave=sin(delta*0.048);
+  d+=normalize(sd+vec2(.0001))*wave*env*uShockAmp*uDpr;
  }
  return m+d;
 }
@@ -82,6 +111,7 @@ vec3 field(vec2 p,vec2 m){
  float near=exp(-dist*.0075);
  float size=uDotSizeBase+uDotSizeFlash*fl+uDotSizeNear*near;
  float dot_=smoothstep(size,size-uDotSoftness,r);
+ dot_*=exp(-dist*uHalo);
  vec3 base=mix(uRed,uRedDeep,uBaseDeepMix);
  vec3 dotCol=mix(uRedDeep,uRed,uDotRedMix);
  dotCol=mix(dotCol,uDotColor,uDotColorMix);
@@ -126,6 +156,7 @@ const FLOAT_UNIFORMS = {
   uSwirl: "swirl",
   uShape: "dotShape",
   uShockAmp: "shockAmp",
+  uHalo: "halo",
 };
 
 const UNIFORM_NAMES = [
@@ -138,6 +169,7 @@ const UNIFORM_NAMES = [
   "uDotColor",
   "uHue",
   "uDotHue",
+  "uRippleTime",
   "uInvert",
   "uShock",
   ...Object.keys(FLOAT_UNIFORMS),
@@ -145,6 +177,10 @@ const UNIFORM_NAMES = [
 
 function isAnimated(p) {
   return p.speed > 0 || p.hueSpeed > 0 || p.colorShift > 0;
+}
+
+function followsPointer(p) {
+  return isAnimated(p) || p.halo > 0.001;
 }
 
 export default function KroenField() {
@@ -183,10 +219,14 @@ export default function KroenField() {
     let lastMove = performance.now();
     let lastFrame = 0;
     let simTime = 0;
+    let rippleTime = 0;
+    let tintCycles = 0;
     let hue = 0;
     let dotHue = 0;
     let shock = null;
     let raf = 0;
+    let brandRed = readCssRgb("--color-red", "#C91515");
+    let brandRedAt = 0;
 
     function sh(t, s) {
       const o = gl.createShader(t);
@@ -226,8 +266,16 @@ export default function KroenField() {
       gl.viewport(0, 0, cv.width, cv.height);
     }
 
+    function currentBrandRed(now) {
+      if (now - brandRedAt > 1000) {
+        brandRed = readCssRgb("--color-red", "#C91515");
+        brandRedAt = now;
+      }
+      return brandRed;
+    }
+
     function applyColors() {
-      gl.uniform3fv(u.uRed, readCssRgb("--color-red", "#C91515"));
+      gl.uniform3fv(u.uRed, currentBrandRed(performance.now()));
       gl.uniform3fv(u.uRedDeep, readCssRgb("--color-red-deep", "#8F0C0C"));
     }
 
@@ -261,14 +309,16 @@ export default function KroenField() {
       const animated = isAnimated(p);
 
       simTime += dt * p.speed;
+      rippleTime += dt * (p.speed > 0 ? p.speed : p.rippleAmp > 0 ? 0.85 : 0);
+      if (p.tintDrift > 0) tintCycles += dt * p.tintDrift;
       hue = p.hueSpeed > 0 ? (hue + dt * p.hueSpeed * Math.PI * 2) % (Math.PI * 2) : 0;
       dotHue =
         p.colorShift > 0
           ? (dotHue + dt * p.colorShift * Math.PI * 2) % (Math.PI * 2)
           : 0;
 
-      if (animated) {
-        const idle = performance.now() - lastMove > 3500;
+      if (followsPointer(p)) {
+        const idle = animated && performance.now() - lastMove > 3500;
         const tx = idle ? innerWidth * (0.5 + 0.32 * Math.sin(simTime * 0.37)) : mx;
         const ty = idle ? innerHeight * (0.45 + 0.28 * Math.sin(simTime * 0.53 + 1.3)) : my;
         smx += (tx / innerWidth - smx) * p.mouseLag;
@@ -280,9 +330,17 @@ export default function KroenField() {
 
       const age = shockAge(t);
       applyParams(p);
+      if (p.tintDrift > 0) {
+        const base = tintAt(tintCycles, currentBrandRed(t));
+        gl.uniform3fv(u.uRed, base);
+        gl.uniform3fv(u.uRedDeep, deepen(base));
+      } else {
+        applyColors();
+      }
       gl.uniform2f(u.uRes, cv.width, cv.height);
       gl.uniform2f(u.uMouse, smx, smy);
       gl.uniform1f(u.uTime, simTime);
+      gl.uniform1f(u.uRippleTime, rippleTime);
       gl.uniform1f(u.uHue, hue);
       gl.uniform1f(u.uDotHue, dotHue);
       gl.uniform1f(u.uDpr, dpr);
@@ -290,7 +348,11 @@ export default function KroenField() {
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
       const pointerSettling = Math.abs(mx - rx) + Math.abs(my - ry) > 0.5;
-      if (animated || shock || (p.ringEnabled && pointerSettling)) {
+      const haloTargetY = 1 - my / innerHeight;
+      const haloSettling =
+        p.halo > 0.001 &&
+        Math.abs(mx / innerWidth - smx) + Math.abs(haloTargetY - smy) > 0.004;
+      if (animated || p.tintDrift > 0 || p.rippleAmp > 0 || shock || (p.ringEnabled && pointerSettling) || haloSettling) {
         raf = requestAnimationFrame(frame);
       } else {
         lastFrame = 0;
@@ -310,7 +372,8 @@ export default function KroenField() {
       mx = e.clientX;
       my = e.clientY;
       lastMove = performance.now();
-      if (paramsRef.current.ringEnabled) requestRender();
+      const p = paramsRef.current;
+      if (p.ringEnabled || p.halo > 0.001 || p.tintDrift > 0) requestRender();
     }
 
     function onClick(e) {
