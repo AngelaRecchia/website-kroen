@@ -2,12 +2,15 @@ import { NextResponse } from "next/server";
 
 const UA = "ColorificioKroen/1.0 (website; transport tiles)";
 
-function parseTile(value) {
-  const n = Number.parseInt(String(value).replace(/\.png$/i, ""), 10);
+function parseTile(value: string) {
+  const n = Number.parseInt(value.replace(/\.png$/i, ""), 10);
   return Number.isInteger(n) ? n : NaN;
 }
 
-export async function GET(_request, context) {
+export async function GET(
+  _request: Request,
+  context: { params: Promise<{ z: string; x: string; y: string }> },
+) {
   const { z, x, y } = await context.params;
   const zi = parseTile(z);
   const xi = parseTile(x);
